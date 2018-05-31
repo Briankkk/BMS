@@ -135,6 +135,22 @@ const menuData = [
     ],
   },
   {
+    name: '基础管理',
+    icon: 'tool',
+    path: 'management',
+    children: [
+      {
+        name: '客户管理',
+        path: 'customer',
+      },
+      {
+        name: '供应商管理',
+        path: 'supplier',
+      },
+    ],
+  },
+
+  {
     name: '账户',
     icon: 'user',
     path: 'user',
