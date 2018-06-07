@@ -1,5 +1,5 @@
 import { routerRedux } from 'dva/router';
-import { fakeAccountLogin } from '../services/api';
+import { login,logout } from '../services/home';
 import { setAuthority } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
 
@@ -7,24 +7,27 @@ export default {
   namespace: 'login',
 
   state: {
-    status: undefined,
+    status: '',
   },
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      });
-      // Login successfully
-      if (response.status === 'ok') {
+      const res = yield call(login, payload);
+      if (res.code === -1) {
+        yield put({
+          type: 'changeLoginStatus',
+          payload: {status:'error'},
+        });
+      }
+      else if (res.code === 0) {
+        yield  put({type: 'changeLoginStatus', payload: {status: 'success',currentAuthority:'admin'}});
         reloadAuthorized();
         yield put(routerRedux.push('/'));
       }
     },
-    *logout(_, { put, select }) {
+    *logout(_, { call,put, select }) {
       try {
+        yield call(logout);
         // get location pathname
         const urlParams = new URL(window.location.href);
         const pathname = yield select(state => state.routing.location.pathname);
@@ -35,8 +38,7 @@ export default {
         yield put({
           type: 'changeLoginStatus',
           payload: {
-            status: false,
-            currentAuthority: 'guest',
+            status: '',
           },
         });
         reloadAuthorized();
@@ -51,7 +53,6 @@ export default {
       return {
         ...state,
         status: payload.status,
-        type: payload.type,
       };
     },
   },

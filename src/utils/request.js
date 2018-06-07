@@ -52,6 +52,7 @@ export default function request(url, options) {
       newOptions.headers = {
         Accept: 'application/json',
         'Content-Type': 'application/json; charset=utf-8',
+        //'csrfToken': document.cookie["csrfToken"],
         ...newOptions.headers,
       };
       newOptions.body = JSON.stringify(newOptions.body);

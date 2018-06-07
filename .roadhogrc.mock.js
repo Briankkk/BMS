@@ -1,5 +1,6 @@
 import mockjs from 'mockjs';
 import { getRule, postRule } from './mock/rule';
+import { getCust, postCust} from './mock/customer'
 import { getActivities, getNotice, getFakeList } from './mock/api';
 import { getFakeChartData } from './mock/chart';
 import { getProfileBasicData } from './mock/profile';
@@ -62,10 +63,10 @@ const proxy = {
     $body: postRule,
   },
   'POST /api/forms': (req, res) => {
-    res.send({ message: 'Ok' });
+    res.send({message: 'Ok'});
   },
   'GET /api/tags': mockjs.mock({
-    'list|100': [{ name: '@city', 'value|1-100': 150, 'type|0-2': 1 }],
+    'list|100': [{name: '@city', 'value|1-100': 150, 'type|0-2': 1}],
   }),
   'GET /api/fake_list': getFakeList,
   'GET /api/fake_chart_data': getFakeChartData,
@@ -96,7 +97,7 @@ const proxy = {
     });
   },
   'POST /api/register': (req, res) => {
-    res.send({ status: 'ok', currentAuthority: 'user' });
+    res.send({status: 'ok', currentAuthority: 'user'});
   },
   'GET /api/notices': getNotices,
   'GET /api/500': (req, res) => {
@@ -135,6 +136,7 @@ const proxy = {
       path: '/base/category/list',
     });
   },
+  'GET /customer/query': getCust,
 };
 
 export default (noProxy ? {} : delay(proxy, 1000));

@@ -19,7 +19,7 @@ const formatWan = val => {
   if (val > 10000) {
     result = Math.floor(val / 10000);
     result = (
-      <span>
+      <span>rowKey
         {result}
         <em className={styles.wan}>万</em>
       </span>

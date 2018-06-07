@@ -1,21 +1,29 @@
+import { query,add,mod,del } from '../services/customer';
+import {pageInfo} from '../constants/constants'
 export default {
   namespace: 'customer',
 
   state: {
-    data: {
-      list: [],
-      pagination: {},
+    list: [],
+    pagination: pageInfo,
+
+  },
+
+  effects: {
+    *query({ payload = {} }, { call, put }) {
+      const res = yield call(query, payload);
+      if (res.code === 0) {
+        yield put({
+          type: 'save',
+          payload: {list: res.data},
+        });
+      }
     },
   },
 
-  effects: {},
-
   reducers: {
     save(state, action) {
-      return {
-        ...state,
-        data: action.payload,
-      };
+      return {...state, ...action.payload};
     },
   },
 };
