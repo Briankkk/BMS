@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import {Input,Card,Form,Row,Col,Select,Button,Icon,Divider,Modal,Popconfirm} from 'antd';
-import { StandardTable,FormField } from 'components';
+import { StandardTable,FormField,AddButton } from 'components';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import styles from './index.less';
 
@@ -136,6 +136,7 @@ export default class Customer extends PureComponent {
 
   render() {
     const { customer: { list,pagination }, loading } = this.props;
+
     const columns = [
       {
         title: '客户名称',
@@ -176,14 +177,6 @@ export default class Customer extends PureComponent {
       }
     ];
 
-    const extraContent = (
-      <div>
-        <Button icon="plus" className={styles.extraContentButton} type="primary"
-                onClick={() => this.handleModalVisible(true,'Add',{})}>
-          新增
-        </Button>
-      </div>
-    );
 
     const parentMethods = {
       handleAdd: this.handleAdd,
@@ -193,7 +186,7 @@ export default class Customer extends PureComponent {
 
     return (
       <PageHeaderLayout content="帮助说明文档">
-        <Card title="客户列表" bordered={false} extra={extraContent}>
+        <Card title="客户列表" bordered={false} extra={<AddButton handleOnClick={()=>{this.handleModalVisible(true,'Add',{})}}/>}>
           <div className={styles.tableListForm}>{this.renderForm()}</div>
           <StandardTable columns={columns}
                          pagination={pagination}
@@ -207,6 +200,7 @@ export default class Customer extends PureComponent {
     );
   }
 }
+
 
 const CustomerModel = Form.create()(props => {
   const { modalVisible, form, handleAdd, handleEdit,handleModalVisible,customerInfo,editType } = props;
@@ -225,6 +219,7 @@ const CustomerModel = Form.create()(props => {
   return (
     <Modal
       title="新建客户"
+      destroyOnClose={true}
       visible={modalVisible}
       onOk={okHandle}
       onCancel={() => handleModalVisible(false,'',{})}
