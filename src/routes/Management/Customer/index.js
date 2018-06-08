@@ -1,8 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import {Input,Card,Radio,Form,Row,Col,Select,Button,Icon,Divider} from 'antd';
-import moment from 'moment';
-import { StandardTable } from 'components';
+import {Input,Card,Form,Row,Col,Select,Button,Icon,Divider,Modal,Popconfirm} from 'antd';
+import { StandardTable,FormField } from 'components';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import styles from './index.less';
 
@@ -15,10 +14,9 @@ const FormItem = Form.Item;
 @Form.create()
 export default class Customer extends PureComponent {
   state = {
-    //modalVisible: false,
-    expandForm: false,
-    selectedRows: [],
-    //formValues: {},
+    modalVisible: false,
+    customerInfo:{},
+    editType:'',
   };
 
   componentDidMount() {
@@ -28,6 +26,44 @@ export default class Customer extends PureComponent {
 
     });
   }
+
+  handleModalVisible = (flag,type,cutomerInfo) => {
+    this.setState({
+      modalVisible: !!flag,
+      editType:type,
+      customerInfo:cutomerInfo
+    });
+  };
+
+  handleAdd = fields => {
+    this.props.dispatch({
+      type: 'customer/add',
+      payload: {...fields},
+    });
+    this.setState({
+      modalVisible: false,
+    });
+  };
+
+
+  handleEdit = (id,fields) => {
+    this.props.dispatch({
+      type: 'customer/modify',
+      payload: {...fields,CUSTOMER_ID:id},
+    });
+    this.setState({
+      modalVisible: false,
+    });
+  };
+
+  handleDelete = id => {
+    this.props.dispatch({
+      type: 'customer/delete',
+      payload: {id},
+    });
+  };
+
+
 
   renderForm() {
     return this.renderSimpleForm();
@@ -40,7 +76,7 @@ export default class Customer extends PureComponent {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="规则编号">
-              {getFieldDecorator('no')(<Input placeholder="请输入" />)}
+              {getFieldDecorator('no')(<Input placeholder="请输入"/>)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
@@ -62,7 +98,7 @@ export default class Customer extends PureComponent {
                 重置
               </Button>
               <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-                展开 <Icon type="down" />
+                展开 <Icon type="down"/>
               </a>
             </span>
           </Col>
@@ -72,12 +108,8 @@ export default class Customer extends PureComponent {
   }
 
 
-
   render() {
     const { customer: { list,pagination }, loading } = this.props;
-
-    const { modalVisible } = this.state;
-
     const columns = [
       {
         title: '客户名称',
@@ -105,37 +137,122 @@ export default class Customer extends PureComponent {
       },
       {
         title: '操作',
-        render: () => (
+        render: (text, record) => (
           <Fragment>
-            <a href="">修改</a>
+            <a onClick={() => {this.handleModalVisible(true,'Mod',record);}}>修改</a>
             <Divider type="vertical"/>
-            <a href="">删除</a>
+            <Popconfirm title="确认要删除这个客户吗?" onConfirm={() => {
+                                this.handleDelete(record.CUSTOMER_ID);
+                            }} okText="确认" cancelText="取消"><a>删除</a>
+            </Popconfirm>
           </Fragment>
         ),
-      },
+      }
     ];
 
     const extraContent = (
       <div>
-        <Button icon="plus"  className={styles.extraContentButton} type="primary" onClick={() => this.handleModalVisible(true)}>
-          新建
+        <Button icon="plus" className={styles.extraContentButton} type="primary"
+                onClick={() => this.handleModalVisible(true,'Add',{})}>
+          新增
         </Button>
       </div>
     );
 
+    const parentMethods = {
+      handleAdd: this.handleAdd,
+      handleEdit:this.handleEdit,
+      handleModalVisible: this.handleModalVisible,
+    };
+
     return (
       <PageHeaderLayout content="帮助说明文档">
-        <div className={styles.standardList}>
-          <Card title="客户列表" bordered={false} extra={extraContent}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <StandardTable columns={columns}
-                           pagination={pagination}
-                           dataSource={list}
-                           loading={loading}/>
+        <Card title="客户列表" bordered={false} extra={extraContent}>
+          <div className={styles.tableListForm}>{this.renderForm()}</div>
+          <StandardTable columns={columns}
+                         pagination={pagination}
+                         dataSource={list}
+                         loading={loading}/>
 
-          </Card>
-        </div>
+        </Card>
+        <CustomerModel {...parentMethods} {...this.state}/>
       </PageHeaderLayout>
     );
   }
-  }
+}
+
+const CustomerModel = Form.create()(props => {
+  const { modalVisible, form, handleAdd, handleEdit,handleModalVisible,customerInfo,editType } = props;
+  const okHandle = () => {
+    form.validateFields((err, fieldsValue) => {
+      if (!err) {
+        form.resetFields();
+        if (editType === 'Add') {
+          handleAdd(fieldsValue);
+        } else if (editType === 'Mod') {
+          handleEdit(customerInfo.CUSTOMER_ID, fieldsValue);
+        }
+      }
+    });
+  };
+  return (
+    <Modal
+      title="新建客户"
+      visible={modalVisible}
+      onOk={okHandle}
+      onCancel={() => handleModalVisible(false,'',{})}
+    >
+      <FormField
+        form={form}
+        label="客户名称"
+        name="CUSTOMER_NAME"
+        required={true}
+        initialValue={customerInfo.CUSTOMER_NAME}
+      >
+        <Input />
+      </FormField>
+      <FormField
+        form={form}
+        label="客户简称"
+        name="CUSTOMER_SHORT_NAME"
+        required={true}
+        initialValue={customerInfo.CUSTOMER_SHORT_NAME}
+      >
+        <Input />
+      </FormField>
+      <FormField
+        form={form}
+        label="客户编码"
+        name="CUSTOMER_CODE"
+        required={true}
+        initialValue={customerInfo.CUSTOMER_CODE}
+      >
+        <Input />
+      </FormField>
+      <FormField
+        form={form}
+        label="联系人"
+        name="LINKMAN"
+        initialValue={customerInfo.LINKMAN}
+      >
+        <Input />
+      </FormField>
+      <FormField
+        form={form}
+        label="联系电话"
+        name="PHONE"
+        initialValue={customerInfo.PHONE}
+      >
+        <Input />
+      </FormField>
+      <FormField
+        form={form}
+        label="联系地址"
+        name="ADDRESS"
+        initialValue={customerInfo&&customerInfo.ADDRESS}
+      >
+        <Input />
+      </FormField>
+    </Modal>
+  );
+});
