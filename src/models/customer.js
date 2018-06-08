@@ -7,13 +7,13 @@ export default {
 
   state: {
     list: [],
-    pagination: pageInfo,
+    pagination: {...pageInfo,total:22},
     customer:{},
   },
 
   effects: {
     *query({ payload = {} }, { call, put }) {
-      const res = yield call(query, payload);
+      const res = yield call(query, {...pageInfo,...payload});
       if (res.code === 0) {
         yield put({
           type: 'save',
@@ -48,7 +48,6 @@ export default {
     },
 
     *modify({ payload = {} }, { call, put }) {
-      console.log(payload)
       const res = yield call(mod, payload);
       if (res.code === 0) {
         message.success('修改客户成功');

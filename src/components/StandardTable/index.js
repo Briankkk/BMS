@@ -13,7 +13,7 @@ class StandardTable extends PureComponent {
   }
 
   handleTableChange = (pagination, filters, sorter) => {
-    //this.props.onChange(pagination, filters, sorter);
+    this.props.onChange(pagination, filters, sorter);
   };
 
 
@@ -24,6 +24,9 @@ class StandardTable extends PureComponent {
       showSizeChanger: true,
       showQuickJumper: true,
       ...pagination,
+      showTotal: function () {  //设置显示一共几条数据
+        return '共 ' + pagination.total + ' 条数据';
+      }
     };
 
     return (

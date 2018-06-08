@@ -63,6 +63,32 @@ export default class Customer extends PureComponent {
     });
   };
 
+  handleTableChange = (pagination, filtersArg, sorter) => {
+
+    //const { formValues } = this.state;
+
+    //const filters = Object.keys(filtersArg).reduce((obj, key) => {
+    //  const newObj = { ...obj };
+    //  newObj[key] = getValue(filtersArg[key]);
+    //  return newObj;
+    //}, {});
+
+    const params = {
+      PAGE_INDEX: pagination.current,
+      PAGE_SIZE: pagination.pageSize,
+      //...formValues,
+      //...filters,
+    };
+    //if (sorter.field) {
+    //  params.sorter = `${sorter.field}_${sorter.order}`;
+    //}
+
+    this.props.dispatch({
+      type: 'customer/query',
+      payload: params,
+    });
+  };
+
 
 
   renderForm() {
@@ -172,7 +198,8 @@ export default class Customer extends PureComponent {
           <StandardTable columns={columns}
                          pagination={pagination}
                          dataSource={list}
-                         loading={loading}/>
+                         loading={loading}
+                         onChange={this.handleTableChange}/>
 
         </Card>
         <CustomerModel {...parentMethods} {...this.state}/>
@@ -249,7 +276,7 @@ const CustomerModel = Form.create()(props => {
         form={form}
         label="联系地址"
         name="ADDRESS"
-        initialValue={customerInfo&&customerInfo.ADDRESS}
+        initialValue={customerInfo.ADDRESS}
       >
         <Input />
       </FormField>
