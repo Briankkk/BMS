@@ -1,17 +1,17 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import {Input,Card,Form,Row,Col,Select,Button,Icon,Divider,Modal,Popconfirm} from 'antd';
-import { StandardTable,FormField,AddButton } from 'components';
+import { StandardTable,FormField,FormQuery,AddButton } from 'components';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import styles from './index.less';
+import CustomerModel from './customerModel';
+import QueryForm from './queryForm';
 
-const FormItem = Form.Item;
 
 @connect(({ customer, loading }) => ({
   customer,
   loading: loading.models.customer,
 }))
-@Form.create()
 export default class Customer extends PureComponent {
   state = {
     modalVisible: false,
@@ -63,6 +63,14 @@ export default class Customer extends PureComponent {
     });
   };
 
+  handleQuery=fields=>{
+    this.props.dispatch({
+      type: 'customer/query',
+      payload: fields,
+    });
+  }
+
+
   handleTableChange = (pagination, filtersArg, sorter) => {
 
     //const { formValues } = this.state;
@@ -88,51 +96,6 @@ export default class Customer extends PureComponent {
       payload: params,
     });
   };
-
-
-
-  renderForm() {
-    return this.renderSimpleForm();
-  }
-
-  renderSimpleForm() {
-    const { getFieldDecorator } = this.props.form;
-    return (
-      <Form onSubmit={this.handleSearch} layout="inline">
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label="规则编号">
-              {getFieldDecorator('no')(<Input placeholder="请输入"/>)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="使用状态">
-              {getFieldDecorator('status')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">关闭</Option>
-                  <Option value="1">运行中</Option>
-                </Select>
-              )}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <span className={styles.submitButtons}>
-              <Button type="primary" htmlType="submit">
-                查询
-              </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-                重置
-              </Button>
-              <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-                展开 <Icon type="down"/>
-              </a>
-            </span>
-          </Col>
-        </Row>
-      </Form>
-    );
-  }
-
 
   render() {
     const { customer: { list,pagination }, loading } = this.props;
@@ -187,7 +150,7 @@ export default class Customer extends PureComponent {
     return (
       <PageHeaderLayout content="帮助说明文档">
         <Card title="客户列表" bordered={false} extra={<AddButton handleOnClick={()=>{this.handleModalVisible(true,'Add',{})}}/>}>
-          <div className={styles.tableListForm}>{this.renderForm()}</div>
+          <QueryForm handleQuery={this.handleQuery}/>
           <StandardTable columns={columns}
                          pagination={pagination}
                          dataSource={list}
@@ -202,79 +165,7 @@ export default class Customer extends PureComponent {
 }
 
 
-const CustomerModel = Form.create()(props => {
-  const { modalVisible, form, handleAdd, handleEdit,handleModalVisible,customerInfo,editType } = props;
-  const okHandle = () => {
-    form.validateFields((err, fieldsValue) => {
-      if (!err) {
-        form.resetFields();
-        if (editType === 'Add') {
-          handleAdd(fieldsValue);
-        } else if (editType === 'Mod') {
-          handleEdit(customerInfo.CUSTOMER_ID, fieldsValue);
-        }
-      }
-    });
-  };
-  return (
-    <Modal
-      title="新建客户"
-      destroyOnClose={true}
-      visible={modalVisible}
-      onOk={okHandle}
-      onCancel={() => handleModalVisible(false,'',{})}
-    >
-      <FormField
-        form={form}
-        label="客户名称"
-        name="CUSTOMER_NAME"
-        required={true}
-        initialValue={customerInfo.CUSTOMER_NAME}
-      >
-        <Input />
-      </FormField>
-      <FormField
-        form={form}
-        label="客户简称"
-        name="CUSTOMER_SHORT_NAME"
-        required={true}
-        initialValue={customerInfo.CUSTOMER_SHORT_NAME}
-      >
-        <Input />
-      </FormField>
-      <FormField
-        form={form}
-        label="客户编码"
-        name="CUSTOMER_CODE"
-        required={true}
-        initialValue={customerInfo.CUSTOMER_CODE}
-      >
-        <Input />
-      </FormField>
-      <FormField
-        form={form}
-        label="联系人"
-        name="LINKMAN"
-        initialValue={customerInfo.LINKMAN}
-      >
-        <Input />
-      </FormField>
-      <FormField
-        form={form}
-        label="联系电话"
-        name="PHONE"
-        initialValue={customerInfo.PHONE}
-      >
-        <Input />
-      </FormField>
-      <FormField
-        form={form}
-        label="联系地址"
-        name="ADDRESS"
-        initialValue={customerInfo.ADDRESS}
-      >
-        <Input />
-      </FormField>
-    </Modal>
-  );
-});
+
+
+
+
