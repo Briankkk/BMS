@@ -18,14 +18,15 @@ class StandardTable extends PureComponent {
 
 
   render() {
-    const {  dataSource, pagination , loading, columns, rowKey } = this.props;
+    const {  dataSource, pagination , total,loading, columns, rowKey } = this.props;
 
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
+      total:total,
       ...pagination,
       showTotal: function () {  //设置显示一共几条数据
-        return '共 ' + pagination.total + ' 条数据';
+        return '共 ' + total + ' 条数据';
       }
     };
 

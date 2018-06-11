@@ -7,7 +7,8 @@ export default {
 
   state: {
     list: [],
-    pagination: {...pageInfo,total:22},
+    total:0,
+    pagination: {...pageInfo},
     customer:{},
   },
 
@@ -17,7 +18,7 @@ export default {
       if (res.code === 0) {
         yield put({
           type: 'save',
-          payload: {list: res.data},
+          payload: {list: res.data.list,total:res.data.total},
         });
       }
     },

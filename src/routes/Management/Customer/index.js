@@ -17,6 +17,7 @@ export default class Customer extends PureComponent {
     modalVisible: false,
     customerInfo:{},
     editType:'',
+    formValues: {},
   };
 
   componentDidMount() {
@@ -64,6 +65,9 @@ export default class Customer extends PureComponent {
   };
 
   handleQuery=fields=>{
+    this.setState({
+      formValues: fields,
+    });
     this.props.dispatch({
       type: 'customer/query',
       payload: fields,
@@ -73,24 +77,16 @@ export default class Customer extends PureComponent {
 
   handleTableChange = (pagination, filtersArg, sorter) => {
 
-    //const { formValues } = this.state;
-
-    //const filters = Object.keys(filtersArg).reduce((obj, key) => {
-    //  const newObj = { ...obj };
-    //  newObj[key] = getValue(filtersArg[key]);
-    //  return newObj;
-    //}, {});
-
+    const { formValues } = this.state;
     const params = {
       PAGE_INDEX: pagination.current,
       PAGE_SIZE: pagination.pageSize,
-      //...formValues,
-      //...filters,
+      ...formValues,
     };
-    //if (sorter.field) {
-    //  params.sorter = `${sorter.field}_${sorter.order}`;
-    //}
-
+    if (sorter.field) {
+      params.SORTER_FIELD = `${sorter.field}`;
+      params.SORTER_ORDER = `${sorter.order}`
+    }
     this.props.dispatch({
       type: 'customer/query',
       payload: params,
@@ -98,12 +94,13 @@ export default class Customer extends PureComponent {
   };
 
   render() {
-    const { customer: { list,pagination }, loading } = this.props;
+    const { customer: { list,pagination,total}, loading } = this.props;
 
     const columns = [
       {
         title: '客户名称',
         dataIndex: 'CUSTOMER_NAME',
+        sorter:true
       },
       {
         title: '客户简称',
@@ -153,6 +150,7 @@ export default class Customer extends PureComponent {
           <QueryForm handleQuery={this.handleQuery}/>
           <StandardTable columns={columns}
                          pagination={pagination}
+                         total={total}
                          dataSource={list}
                          loading={loading}
                          onChange={this.handleTableChange}/>
