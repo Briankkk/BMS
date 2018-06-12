@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import {Card,Form,Button,Select, Upload, Icon,message} from 'antd';
 import {FormField } from 'components';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-//import styles from './index.less';
+
 
 
 function beforeUpload(file) {
@@ -22,15 +22,10 @@ function beforeUpload(file) {
 @Form.create()
 export default class BatchUpload extends PureComponent {
 
-  constructor(props) {
-    super(props);
-  }
 
-
-
-  componentDidMount() {
-
-  }
+  state = {
+    fileList: [],
+  };
 
   handleSubmit = e => {
     e.preventDefault();
@@ -46,8 +41,13 @@ export default class BatchUpload extends PureComponent {
       });
     });
   };
+
+  handleChange = ({ fileList }) => this.setState({ fileList })
+
+
   render() {
     const { form } = this.props;
+    const { fileList } = this.state;
     return (
       <PageHeaderLayout content="帮助说明文档">
         <Card title="批量文件" bordered={false}>
@@ -70,13 +70,12 @@ export default class BatchUpload extends PureComponent {
               name="fileName"
               required={true}
             >
-              <Upload name="logo" action="/uploadFile" beforeUpload={beforeUpload}>
-                <Button><Icon type="upload"/> 点击上传</Button>
+              <Upload name="logo" action="/uploadFile" beforeUpload={beforeUpload} onChange={this.handleChange}>
+                {fileList.length >= 1 ? null : <Button><Icon type="upload"/> 点击上传</Button>}
               </Upload>
             </FormField>
             <FormField
               form={form}
-              label=""
               wrapperCol={{ span: 15, offset: 5 }}
               name="submit"
             >
