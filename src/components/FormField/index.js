@@ -46,7 +46,6 @@ export default class FormField extends Component {
 
   render() {
     const { required, label ,colon,extra,help,labelCol=DefaultModelFormLayout.labelCol,wrapperCol=DefaultModelFormLayout.wrapperCol,hasFeedback,validateStatus} = this.props;
-
     return (
       <div>
         <Form.Item {...{ labelCol,wrapperCol,label,required,hasFeedback, validateStatus, extra,help,colon}} >

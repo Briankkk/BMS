@@ -147,6 +147,10 @@ const menuData = [
         name: '供应商管理',
         path: 'supplier',
       },
+      {
+        name: '批量上传',
+        path: 'batchUpload',
+      }
     ],
   },
 

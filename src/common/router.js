@@ -75,6 +75,9 @@ export const getRouterData = app => {
     '/management/customer': {
     component: dynamicWrapper(app, ['customer'], () => import('../routes/Management/Customer')),
     },
+    '/management/batchUpload': {
+    component: dynamicWrapper(app, ['batchUpload'], () => import('../routes/Management/BatchUpload')),
+    },
     '/dashboard/analysis': {
       component: dynamicWrapper(app, ['chart'], () => import('../routes/Dashboard/Analysis')),
     },

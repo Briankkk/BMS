@@ -1,11 +1,12 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import {Input,Card,Form,Row,Col,Select,Button,Icon,Divider,Modal,Popconfirm} from 'antd';
-import { StandardTable,FormField,FormQuery,AddButton } from 'components';
+import {Card,Divider,Modal,Popconfirm} from 'antd';
+import { StandardTable,AddButton } from 'components';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import styles from './index.less';
 import CustomerModel from './customerModel';
 import QueryForm from './queryForm';
+import styles from './index.less';
+
 
 
 @connect(({ customer, loading }) => ({
