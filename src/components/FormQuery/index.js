@@ -10,12 +10,20 @@ export default class FormQuery extends PureComponent {
   };
 
 
-
   handleSearch = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-          this.props.handleQuery(values);
+        this.props.handleQuery(values);
+      }
+    });
+  }
+
+  handleExport = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        this.props.handleExport(values);
       }
     });
   }
@@ -32,7 +40,7 @@ export default class FormQuery extends PureComponent {
 
   renderField() {
 
-    const { children=[], cols = 3 ,showCountDefault=3,searchText='查询', resetText = '重置',collapseText='更多'} = this.props;
+    const { children=[], cols = 3 ,showCountDefault=3,searchText='查询', exportable = true, resetText = '重置',collapseText='更多'} = this.props;
     const colSpan = 24 / cols;
     const totalCount = children.length;
     const showCount = this.state.expand ? totalCount : showCountDefault;
@@ -48,10 +56,12 @@ export default class FormQuery extends PureComponent {
         {colEles}
         <Col span={buttonCol} style={{ textAlign: 'right' }}>
           <span className={styles.submitButtons}>
-          <Button type="primary" htmlType="submit">{searchText}</Button>
-          <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>{resetText}</Button>
+            <Button type="primary" htmlType="submit">{searchText}</Button>
+            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>{resetText}</Button>
+            {exportable&&<Button style={{ marginLeft: 8 }} onClick={this.handleExport}>导出</Button>}
             {totalCount > showCountDefault && <a style={{ marginLeft: 8 }} onClick={this.toggle}>{collapseText} <Icon
               type={this.state.expand ? 'up' : 'down'}/></a>}
+
           </span>
         </Col>
       </Row>

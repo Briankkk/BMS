@@ -72,7 +72,14 @@ export default class Customer extends PureComponent {
       type: 'customer/query',
       payload: fields,
     });
-  }
+  };
+
+  handleExport=fields=>{
+    this.props.dispatch({
+      type: 'customer/export',
+      payload: {EXPORT_TYPE:'CUSTOMER', ...fields}
+    });
+  };
 
 
   handleTableChange = (pagination, filtersArg, sorter) => {
@@ -147,12 +154,13 @@ export default class Customer extends PureComponent {
     return (
       <PageHeaderLayout content="帮助说明文档">
         <Card title="客户列表" bordered={false} extra={<AddButton handleOnClick={()=>{this.handleModalVisible(true,'Add',{})}}/>}>
-          <QueryForm handleQuery={this.handleQuery}/>
+          <QueryForm handleQuery={this.handleQuery} handleExport={this.handleExport}/>
           <StandardTable columns={columns}
                          pagination={pagination}
                          total={total}
                          dataSource={list}
                          loading={loading}
+                         rowKey={record => record.CUSTOMER_ID}
                          onChange={this.handleTableChange}/>
 
         </Card>

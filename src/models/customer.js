@@ -1,4 +1,5 @@
 import { query,queryById,add,mod,del } from '../services/customer';
+import {exportFile} from '../services/importExport';
 import {pageInfo} from '../constants/constants'
 import {message} from 'antd';
 
@@ -21,6 +22,10 @@ export default {
           payload: {list: res.data.list,total:res.data.total},
         });
       }
+    },
+
+    *export({ payload = {} }, { call, put }) {
+      yield call(exportFile, {...payload});
     },
 
     *queryById({ payload = {} }, { call, put }) {
