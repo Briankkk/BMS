@@ -77,7 +77,15 @@ export default class Customer extends PureComponent {
 
   handleExport=fields=>{
     this.props.dispatch({
-      type: 'customer/export',
+      //type: 'customer/exportFile',
+      type: 'customer/generatePDF',
+      payload: {EXPORT_TYPE:'CUSTOMER', ...fields}
+    });
+  };
+
+  handlePrint=fields=>{
+    this.props.dispatch({
+      type: 'customer/generatePDF',
       payload: {EXPORT_TYPE:'CUSTOMER', ...fields}
     });
   };

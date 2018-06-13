@@ -1,5 +1,5 @@
 import { query,queryById,add,mod,del } from '../services/customer';
-import {exportFile} from '../services/importExport';
+import {exportFile,generatePDF,printPDF} from '../services/importExport';
 import {pageInfo} from '../constants/constants'
 import {message} from 'antd';
 
@@ -8,25 +8,45 @@ export default {
 
   state: {
     list: [],
-    total:0,
+    total: 0,
     pagination: {...pageInfo},
-    customer:{},
+    customer: {},
   },
 
   effects: {
     *query({ payload = {} }, { call, put }) {
-      const res = yield call(query, {...pageInfo,...payload});
+      const res = yield call(query, {...pageInfo, ...payload});
       if (res.code === 0) {
         yield put({
           type: 'save',
-          payload: {list: res.data.list,total:res.data.total},
+          payload: {list: res.data.list, total: res.data.total},
         });
       }
     },
 
-    *export({ payload = {} }, { call, put }) {
+    *exportFile({ payload = {} }, { call, put }) {
       yield call(exportFile, {...payload});
     },
+
+    *generatePDF({ payload = {} }, { call, put }) {
+      const res = yield call(generatePDF, {...payload});
+      if (res.code === 0) {
+        yield put({
+          type: 'printPDF',
+          payload: {fileName: res.data},
+        });
+
+      }
+    },
+
+
+
+
+    *printPDF({ payload = {} }, { call, put }) {
+        console.log('11111111');
+        yield call(printPDF, {...payload});
+    },
+
 
     *queryById({ payload = {} }, { call, put }) {
       const res = yield call(queryById, payload.id);
@@ -37,7 +57,6 @@ export default {
         });
       }
     },
-
 
 
     *add({ payload = {} }, { call, put }) {
