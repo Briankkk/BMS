@@ -2,6 +2,7 @@ import fetch from 'dva/fetch';
 import { notification } from 'antd';
 import { routerRedux } from 'dva/router';
 import store from '../index';
+import * as Cookies from 'js-cookie';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -43,6 +44,8 @@ function checkStatus(response) {
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options) {
+
+  const csrfToken = Cookies.get('csrfToken');
   const defaultOptions = {
     credentials: 'include',
   };
@@ -52,7 +55,7 @@ export default function request(url, options) {
       newOptions.headers = {
         Accept: 'application/json',
         'Content-Type': 'application/json; charset=utf-8',
-        //'csrfToken': document.cookie["csrfToken"],
+        'x-csrf-token': csrfToken,
         ...newOptions.headers,
       };
       newOptions.body = JSON.stringify(newOptions.body);
@@ -60,6 +63,7 @@ export default function request(url, options) {
       // newOptions.body is FormData
       newOptions.headers = {
         Accept: 'application/json',
+        'x-csrf-token': csrfToken,
         ...newOptions.headers,
       };
     }
@@ -68,9 +72,9 @@ export default function request(url, options) {
   return fetch(url, newOptions)
     .then(checkStatus)
     .then(response => {
-      //if (newOptions.method === 'DELETE' || response.status === 204) {
-      //  return response.text();
-      //}
+      if (response.status === 204) {
+        return response.text();
+      }
       return response.json();
     })
     .catch(e => {

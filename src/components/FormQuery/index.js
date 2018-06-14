@@ -46,11 +46,15 @@ export default class FormQuery extends PureComponent {
     const showCount = this.state.expand ? totalCount : showCountDefault;
 
     const buttonCol = 24 - (totalCount % cols) * colSpan;
-
-    const colEles = children.map((ele, idx) => {
-      return <Col key={`key_${idx}`} span={colSpan}
-                  style={{ display: idx < showCount ? 'block' : 'none' }}> {ele} </Col>
-    })
+    let colEles;
+    if (Array.isArray(children)) {
+      colEles = children.map((ele, idx) => {
+        return <Col key={`key_${idx}`} span={colSpan}
+                    style={{ display: idx < showCount ? 'block' : 'none' }}> {ele} </Col>
+      })
+    } else {
+      colEles = <Col key={`key_1`} span={colSpan}> {children} </Col>
+    }
     return (
       <Row gutter={24}>
         {colEles}
@@ -58,7 +62,7 @@ export default class FormQuery extends PureComponent {
           <span className={styles.submitButtons}>
             <Button type="primary" htmlType="submit">{searchText}</Button>
             <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>{resetText}</Button>
-            {exportable&&<Button style={{ marginLeft: 8 }} onClick={this.handleExport}>导出</Button>}
+            {exportable && <Button style={{ marginLeft: 8 }} onClick={this.handleExport}>导出</Button>}
             {totalCount > showCountDefault && <a style={{ marginLeft: 8 }} onClick={this.toggle}>{collapseText} <Icon
               type={this.state.expand ? 'up' : 'down'}/></a>}
 

@@ -40,10 +40,7 @@ export default {
     },
 
 
-
-
     *printPDF({ payload = {} }, { call, put }) {
-        console.log('11111111');
         yield call(printPDF, {...payload});
     },
 
