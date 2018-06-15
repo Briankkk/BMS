@@ -1,9 +1,8 @@
 import { PureComponent} from 'react';
 import { connect } from 'dva';
-import {Card,Form,Button,Select, Upload, Icon,message} from 'antd';
+import {Card,Form,Button,Select, Upload, Icon,message,Tooltip} from 'antd';
 import {FormField } from 'components';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-
 
 
 function beforeUpload(file) {
@@ -42,7 +41,7 @@ export default class BatchUpload extends PureComponent {
     });
   };
 
-  handleChange = ({ fileList }) => this.setState({ fileList });
+  handleChange = ({ fileList }) => this.setState({fileList});
 
   beforeUpload = ({file})=> {
     const isLt2M = file.size / 1024 / 1024 < 2;
@@ -72,16 +71,19 @@ export default class BatchUpload extends PureComponent {
                 <Select.Option value="Supplier">新增供应商</Select.Option>
               </Select>
             </FormField>
+
             <FormField
               form={form}
-              label="文件"
+              label={(<Tooltip title="文件暂时只支持xlsx格式"><span>文件&nbsp;<Icon type="question-circle-o" /></span></Tooltip>)}
               name="fileName"
               required={true}
             >
-              <Upload accept=".xlsx" action="/uploadFile" beforeUpload={this.beforeUpload} onChange={this.handleChange}>
+              <Upload accept=".xlsx" action="/uploadFile" beforeUpload={this.beforeUpload}
+                      onChange={this.handleChange}>
                 {fileList.length >= 1 ? null : <Button><Icon type="upload"/> 点击上传</Button>}
               </Upload>
             </FormField>
+
             <FormField
               form={form}
               wrapperCol={{ span: 15, offset: 5 }}

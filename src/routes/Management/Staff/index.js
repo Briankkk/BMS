@@ -96,7 +96,7 @@ export default class Staff extends PureComponent {
   };
 
   render() {
-    const { staff: { list,pagination,total}, loading } = this.props;
+    const { staff: { list,pagination,total,roleList}, loading } = this.props;
 
     const columns = [
       {
@@ -107,6 +107,10 @@ export default class Staff extends PureComponent {
       {
         title: '员工账号',
         dataIndex: 'STAFF_CODE',
+      },
+      {
+        title: '员工角色',
+        dataIndex: 'STAFF_ROLE',
       },
       {
         title: '操作',
@@ -149,7 +153,7 @@ export default class Staff extends PureComponent {
                          onChange={this.handleTableChange}/>
 
         </Card>
-        <AddModel {...parentMethods} {...this.state}/>
+        <AddModel {...parentMethods} {...this.state} roleList={roleList}/>
       </PageHeaderLayout>
     );
   }

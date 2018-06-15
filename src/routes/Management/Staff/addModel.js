@@ -1,9 +1,9 @@
-import {Modal,Form,Input} from 'antd';
+import {Modal,Form,Input,Select} from 'antd';
 import {FormField } from 'components';
 
 
 const AddModel = Form.create()(props => {
-  const { modalVisible, form, handleAdd, handleEdit,handleModalVisible,staffInfo,editType } = props;
+  const { modalVisible, form, handleAdd, handleEdit,handleModalVisible,staffInfo,editType,roleList } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (!err) {
@@ -16,6 +16,12 @@ const AddModel = Form.create()(props => {
       }
     });
   };
+
+  const staffRoleData = [];
+  roleList.map((role,idx) => {
+    staffRoleData.push(<Select.Option key={`key_${idx}`} value={role.STAFF_ROLE_NAME}>{role.STAFF_ROLE_CODE}</Select.Option>)
+  });
+
   return (
     <Modal
       title="新建员工"
@@ -49,6 +55,17 @@ const AddModel = Form.create()(props => {
         required={true}
       >
         <Input />
+      </FormField>
+      <FormField
+        form={form}
+        label="员工角色"
+        name="STAFF_ROLE"
+        initialValue={staffInfo.STAFF_ROLE}
+        required={true}
+      >
+        <Select style={{ width: '100%' }} placeholder="请选择员工角色">
+          {staffRoleData}
+        </Select>
       </FormField>
     </Modal>
   );

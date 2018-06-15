@@ -23,24 +23,6 @@ const QueryForm = Form.create()(props => {
         form={form}
       ><Input />
       </FormField>
-      <FormField
-        label="联系人"
-        name="LINKMAN"
-        form={form}
-      ><Input />
-      </FormField>
-      <FormField
-        label="联系电话"
-        name="PHONE"
-        form={form}
-      ><Input />
-      </FormField>
-      <FormField
-        label="联系地址"
-        name="ADDRESS"
-        form={form}
-      ><Input />
-      </FormField>
     </FormQuery>
   )
 

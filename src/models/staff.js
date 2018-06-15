@@ -1,4 +1,5 @@
 import { query,queryById,add,mod,del } from '../services/staff';
+import { query as queryRoleList } from '../services/role';
 import {pageInfo} from '../constants/constants'
 import {message} from 'antd';
 
@@ -8,6 +9,7 @@ export default {
   state: {
     list: [],
     total: 0,
+    roleList:[],
     pagination: {...pageInfo},
   },
 
@@ -19,9 +21,23 @@ export default {
           type: 'save',
           payload: {list: res.data.list, total: res.data.total},
         });
+
+        yield put({
+          type: 'queryRoleList',
+          payload: {},
+        });
       }
     },
 
+    *queryRoleList({ payload = {} }, { call, put }) {
+      const res = yield call(queryRoleList);
+      if (res.code === 0) {
+        yield put({
+          type: 'save',
+          payload: {roleList: res.data},
+        });
+      }
+    },
 
     *queryById({ payload = {} }, { call, put }) {
       const res = yield call(queryById, payload.id);
