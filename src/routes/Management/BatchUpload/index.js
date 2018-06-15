@@ -42,7 +42,15 @@ export default class BatchUpload extends PureComponent {
     });
   };
 
-  handleChange = ({ fileList }) => this.setState({ fileList })
+  handleChange = ({ fileList }) => this.setState({ fileList });
+
+  beforeUpload = ({file})=> {
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error('文件不能超过2M');
+    }
+    return isLt2M;
+  }
 
 
   render() {
@@ -70,7 +78,7 @@ export default class BatchUpload extends PureComponent {
               name="fileName"
               required={true}
             >
-              <Upload name="logo" action="/uploadFile" beforeUpload={beforeUpload} onChange={this.handleChange}>
+              <Upload accept=".xlsx" action="/uploadFile" beforeUpload={this.beforeUpload} onChange={this.handleChange}>
                 {fileList.length >= 1 ? null : <Button><Icon type="upload"/> 点击上传</Button>}
               </Upload>
             </FormField>

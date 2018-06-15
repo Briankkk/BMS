@@ -1,10 +1,9 @@
-import { query,queryById,add,mod,del } from '../services/customer';
-import {exportFile,generatePDF,printPDF} from '../services/importExport';
+import { query,queryById,add,mod,del } from '../services/staff';
 import {pageInfo} from '../constants/constants'
 import {message} from 'antd';
 
 export default {
-  namespace: 'customer',
+  namespace: 'staff',
 
   state: {
     list: [],
@@ -23,26 +22,6 @@ export default {
       }
     },
 
-    *exportFile({ payload = {} }, { call, put }) {
-      yield call(exportFile, {...payload});
-    },
-
-    *generatePDF({ payload = {} }, { call, put }) {
-      const res = yield call(generatePDF, {...payload});
-      if (res.code === 0) {
-        yield put({
-          type: 'printPDF',
-          payload: {fileName: res.data},
-        });
-
-      }
-    },
-
-
-    *printPDF({ payload = {} }, { call, put }) {
-        yield call(printPDF, {...payload});
-    },
-
 
     *queryById({ payload = {} }, { call, put }) {
       const res = yield call(queryById, payload.id);
@@ -58,39 +37,39 @@ export default {
     *add({ payload = {} }, { call, put }) {
       const res = yield call(add, payload);
       if (res.code === 0) {
-        message.success('新增客户成功');
+        message.success('新增员工成功');
         yield put({
           type: 'query',
         });
       }
       else {
-        message.error('新增客户失败');
+        message.error('新增员工失败');
       }
     },
 
     *modify({ payload = {} }, { call, put }) {
       const res = yield call(mod, payload);
       if (res.code === 0) {
-        message.success('修改客户成功');
+        message.success('修改员工成功');
         yield put({
           type: 'query',
         });
       }
       else {
-        message.error('修改客户失败');
+        message.error('修改员工失败');
       }
     },
 
     *delete({ payload = {} }, { call, put }) {
       const res = yield call(del, payload.id);
       if (res.code === 0) {
-        message.success('删除客户成功');
+        message.success('删除员工成功');
         yield put({
           type: 'query',
         });
       }
       else {
-        message.error('删除客户失败');
+        message.error('删除员工失败');
       }
     },
 

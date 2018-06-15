@@ -20,7 +20,7 @@ export default {
         });
       }
       else if (res.code === 0) {
-        yield  put({type: 'changeLoginStatus', payload: {status: 'success',currentAuthority:'admin'}});
+        yield  put({type: 'changeLoginStatus', payload: {status: 'success',currentAuthority:res.data.STAFF_ROLE}});
         reloadAuthorized();
         yield put(routerRedux.push('/'));
       }

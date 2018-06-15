@@ -2,9 +2,9 @@ import {Form,Input} from 'antd';
 import {FormQuery,FormField } from 'components';
 
 const QueryForm = Form.create()(props => {
-  const {form,handleQuery,handleExport} = props;
+  const {form,queryFormProps} = props;
   return(
-    <FormQuery form={form} handleExport={handleExport} handleQuery={handleQuery}>
+    <FormQuery form={form} {...queryFormProps}>
       <FormField
         label="客户名称"
         name="CUSTOMER_NAME"

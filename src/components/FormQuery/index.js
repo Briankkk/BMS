@@ -45,7 +45,7 @@ export default class FormQuery extends PureComponent {
     const totalCount = children.length;
     const showCount = this.state.expand ? totalCount : showCountDefault;
 
-    const buttonCol = 24 - (totalCount % cols) * colSpan;
+    const buttonCol = (totalCount>3&&!this.state.expand)?24:24 - (totalCount % cols) * colSpan;
     let colEles;
     if (Array.isArray(children)) {
       colEles = children.map((ele, idx) => {

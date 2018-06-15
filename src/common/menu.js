@@ -150,6 +150,10 @@ const menuData = [
       {
         name: '批量上传',
         path: 'batchUpload',
+      },
+      {
+        name: '员工管理',
+        path: 'staff',
       }
     ],
   },
@@ -163,14 +167,6 @@ const menuData = [
       {
         name: '登录',
         path: 'login',
-      },
-      {
-        name: '注册',
-        path: 'register',
-      },
-      {
-        name: '注册结果',
-        path: 'register-result',
       },
     ],
   },
