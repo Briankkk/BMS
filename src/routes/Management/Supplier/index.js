@@ -3,20 +3,20 @@ import { connect } from 'dva';
 import {Card,Divider,Modal,Popconfirm} from 'antd';
 import { StandardTable,AddButton } from 'components';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import CustomerModel from './customerModel';
+import AddModel from './addModel';
 import QueryForm from './queryForm';
 import styles from './index.less';
 
 
 
-@connect(({ customer, loading }) => ({
-  customer,
-  loading: loading.models.customer,
+@connect(({ supplier, loading }) => ({
+  supplier,
+  loading: loading.models.supplier,
 }))
 export default class Customer extends PureComponent {
   state = {
     modalVisible: false,
-    customerInfo:{},
+    supplierInfo:{},
     editType:'',
     formValues: {},
   };
@@ -24,22 +24,22 @@ export default class Customer extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'customer/query',
+      type: 'supplier/query',
 
     });
   }
 
-  handleModalVisible = (flag,type,cutomerInfo) => {
+  handleModalVisible = (flag,type,supplierInfo) => {
     this.setState({
       modalVisible: !!flag,
       editType:type,
-      customerInfo:cutomerInfo
+      supplierInfo:supplierInfo
     });
   };
 
   handleAdd = fields => {
     this.props.dispatch({
-      type: 'customer/add',
+      type: 'supplier/add',
       payload: {...fields},
     });
     this.setState({
@@ -50,8 +50,8 @@ export default class Customer extends PureComponent {
 
   handleEdit = (id,fields) => {
     this.props.dispatch({
-      type: 'customer/modify',
-      payload: {...fields,CUSTOMER_ID:id},
+      type: 'supplier/modify',
+      payload: {...fields,SUPPLIER_ID:id},
     });
     this.setState({
       modalVisible: false,
@@ -60,7 +60,7 @@ export default class Customer extends PureComponent {
 
   handleDelete = id => {
     this.props.dispatch({
-      type: 'customer/delete',
+      type: 'supplier/delete',
       payload: {id},
     });
   };
@@ -70,22 +70,15 @@ export default class Customer extends PureComponent {
       formValues: fields,
     });
     this.props.dispatch({
-      type: 'customer/query',
+      type: 'supplier/query',
       payload: fields,
     });
   };
 
   handleExport=fields=>{
     this.props.dispatch({
-      type: 'customer/exportFile',
-      payload: {EXPORT_TYPE:'CUSTOMER', ...fields}
-    });
-  };
-
-  handlePrint=fields=>{
-    this.props.dispatch({
-      type: 'customer/generatePDF',
-      payload: {EXPORT_TYPE:'CUSTOMER', ...fields}
+      type: 'supplier/exportFile',
+      payload: {EXPORT_TYPE:'SUPPLIER', ...fields}
     });
   };
 
@@ -103,28 +96,28 @@ export default class Customer extends PureComponent {
       params.SORTER_ORDER = `${sorter.order}`
     }
     this.props.dispatch({
-      type: 'customer/query',
+      type: 'supplier/query',
       payload: params,
     });
   };
 
   render() {
-    const { customer: { list,pagination,total}, loading } = this.props;
+    const { supplier: { list,pagination,total}, loading } = this.props;
 
     const columns = [
       {
-        title: '客户名称',
-        dataIndex: 'CUSTOMER_NAME',
+        title: '供应商名称',
+        dataIndex: 'SUPPLIER_NAME',
         sorter:true
       },
       {
-        title: '客户简称',
-        dataIndex: 'CUSTOMER_SHORT_NAME',
+        title: '供应商简称',
+        dataIndex: 'SUPPLIER_SHORT_NAME',
         sorter:true
       },
       {
-        title: '客户编码',
-        dataIndex: 'CUSTOMER_CODE',
+        title: '供应商编码',
+        dataIndex: 'SUPPLIER_CODE',
         sorter:true
       },
       {
@@ -140,13 +133,21 @@ export default class Customer extends PureComponent {
         dataIndex: 'ADDRESS'
       },
       {
+        title: '传真',
+        dataIndex: 'FAX'
+      },
+      {
+        title: '电子邮件',
+        dataIndex: 'EMAIL'
+      },
+      {
         title: '操作',
         render: (text, record) => (
           <Fragment>
             <a onClick={() => {this.handleModalVisible(true,'Mod',record);}}>修改</a>
             <Divider type="vertical"/>
-            <Popconfirm title="确认要删除这个客户吗?" onConfirm={() => {
-                                this.handleDelete(record.CUSTOMER_ID);
+            <Popconfirm title="确认要删除这个供应商吗?" onConfirm={() => {
+                                this.handleDelete(record.SUPPLIER_ID);
                             }} okText="确认" cancelText="取消"><a>删除</a>
             </Popconfirm>
           </Fragment>
@@ -169,18 +170,18 @@ export default class Customer extends PureComponent {
 
     return (
       <PageHeaderLayout content="帮助说明文档">
-        <Card title="客户列表" bordered={false} extra={<AddButton handleOnClick={()=>{this.handleModalVisible(true,'Add',{})}}/>}>
+        <Card title="供应商列表" bordered={false} extra={<AddButton handleOnClick={()=>{this.handleModalVisible(true,'Add',{})}}/>}>
           <QueryForm queryFormProps={queryFormProps}/>
           <StandardTable columns={columns}
                          pagination={pagination}
                          total={total}
                          dataSource={list}
                          loading={loading}
-                         rowKey={record => record.CUSTOMER_ID}
+                         rowKey={record => record.SUPPLIER_ID}
                          onChange={this.handleTableChange}/>
 
         </Card>
-        <CustomerModel {...parentMethods} {...this.state}/>
+        <AddModel {...parentMethods} {...this.state}/>
       </PageHeaderLayout>
     );
   }
