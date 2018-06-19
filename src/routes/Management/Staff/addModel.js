@@ -19,7 +19,7 @@ const AddModel = Form.create()(props => {
 
   const staffRoleData = [];
   roleList.map((role,idx) => {
-    staffRoleData.push(<Select.Option key={`key_${idx}`} value={role.STAFF_ROLE_NAME}>{role.STAFF_ROLE_CODE}</Select.Option>)
+    staffRoleData.push(<Select.Option key={`key_${idx}`} value={role.STAFF_ROLE_CODE}>{role.STAFF_ROLE_NAME}</Select.Option>)
   });
 
   return (

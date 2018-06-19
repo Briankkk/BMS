@@ -1,14 +1,16 @@
-import { query,queryById,add,mod,del } from '../services/supplier';
+import { query,queryById,add,mod,del } from '../services/mater';
+import { query as queryMaterTypeList } from '../services/materType';
 import {exportFile} from '../services/importExport';
 import {pageInfo} from '../constants/constants'
 import {message} from 'antd';
 
 export default {
-  namespace: 'supplier',
+  namespace: 'mater',
 
   state: {
     list: [],
     total: 0,
+    materTypeList:[],
     pagination: {...pageInfo},
   },
 
@@ -19,6 +21,21 @@ export default {
         yield put({
           type: 'save',
           payload: {list: res.data.list, total: res.data.total},
+        });
+
+        yield put({
+          type: 'queryMaterTypeList',
+          payload: {},
+        });
+      }
+    },
+
+    *queryMaterTypeList({ payload = {} }, { call, put }) {
+      const res = yield call(queryMaterTypeList);
+      if (res.code === 0) {
+        yield put({
+          type: 'save',
+          payload: {materTypeList: res.data},
         });
       }
     },
@@ -42,39 +59,39 @@ export default {
     *add({ payload = {} }, { call, put }) {
       const res = yield call(add, payload);
       if (res.code === 0) {
-        message.success('新增供应商成功');
+        message.success('新增原料成功');
         yield put({
           type: 'query',
         });
       }
       else {
-        message.error('新增供应商失败');
+        message.error('新增原料失败');
       }
     },
 
     *modify({ payload = {} }, { call, put }) {
       const res = yield call(mod, payload);
       if (res.code === 0) {
-        message.success('修改供应商成功');
+        message.success('修改原料成功');
         yield put({
           type: 'query',
         });
       }
       else {
-        message.error('修改供应商失败');
+        message.error('修改原料失败');
       }
     },
 
     *delete({ payload = {} }, { call, put }) {
       const res = yield call(del, payload.id);
       if (res.code === 0) {
-        message.success('删除供应商成功');
+        message.success('删除原料成功');
         yield put({
           type: 'query',
         });
       }
       else {
-        message.error('删除供应商失败');
+        message.error('删除原料失败');
       }
     },
 
