@@ -75,6 +75,9 @@ export const getRouterData = app => {
     '/management/customer': {
     component: dynamicWrapper(app, ['customer'], () => import('../routes/Management/Customer')),
     },
+    '/management/cust': {
+    component: dynamicWrapper(app, ['cust'], () => import('../routes/Management/Cust')),
+    },
     '/management/supplier': {
       component: dynamicWrapper(app, ['supplier'], () => import('../routes/Management/Supplier')),
     },

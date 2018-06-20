@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { login,logout } from '../services/home';
-import { setAuthority } from '../utils/authority';
+import { setAuthority,setCust } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
 
 export default {
@@ -20,7 +20,7 @@ export default {
         });
       }
       else if (res.code === 0) {
-        yield  put({type: 'changeLoginStatus', payload: {status: 'success',currentAuthority:res.data.STAFF_ROLE}});
+        yield  put({type: 'changeLoginStatus', payload: {status: 'success',currentAuthority:res.data.STAFF_ROLE,custCode:res.data.CUST_CODE}});
         reloadAuthorized();
         yield put(routerRedux.push('/'));
       }
@@ -50,6 +50,7 @@ export default {
   reducers: {
     changeLoginStatus(state, { payload }) {
       setAuthority(payload.currentAuthority);
+      setCust(payload.custCode);
       return {
         ...state,
         status: payload.status,
