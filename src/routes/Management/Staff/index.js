@@ -137,7 +137,6 @@ export default class Staff extends PureComponent {
     const queryFormProps = {
       handleQuery:this.handleQuery,
       exportable:false,
-      handleExport:this.handleExport
     };
 
     return (

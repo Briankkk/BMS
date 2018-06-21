@@ -90,10 +90,14 @@ export const getRouterData = app => {
     '/management/authRequest': {
       component: dynamicWrapper(app, ['authRequest'], () => import('../routes/Management/AuthRequest')),
     },
+    '/management/handlerLog': {
+      component: dynamicWrapper(app, ['handlerLog'], () => import('../routes/Management/HandlerLog')),
+    },
 
     '/mater/mater': {
       component: dynamicWrapper(app, ['mater'], () => import('../routes/Mater/Mater')),
     },
+
 
     '/dashboard/analysis': {
       component: dynamicWrapper(app, ['chart'], () => import('../routes/Dashboard/Analysis')),

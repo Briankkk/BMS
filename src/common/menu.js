@@ -142,6 +142,10 @@ const menuData = {
       path: 'management',
       children: [
         {
+          name: '操作日志',
+          path: 'handlerLog',
+        },
+        {
           name: '租户管理',
           path: 'cust',
         },
