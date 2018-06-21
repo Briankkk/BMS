@@ -1,11 +1,11 @@
 import React, { PureComponent, Fragment } from 'react';
+import moment from 'moment';
 import { connect } from 'dva';
 import {Card,Divider,Modal,Popconfirm} from 'antd';
 import { StandardTable,AddButton } from 'components';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import QueryForm from './queryForm';
 import styles from './index.less';
-
 
 
 @connect(({ handlerLog, loading }) => ({
@@ -26,18 +26,23 @@ export default class HandlerLog extends PureComponent {
   }
 
 
-
-  handleQuery=fields=>{
+  handleQuery = fields=> {
     this.setState({
       formValues: fields,
     });
+
     this.props.dispatch({
       type: 'handlerLog/query',
-      payload: fields,
+      payload: {
+        STAFF_CODE: fields.STAFF_CODE,
+        CUST_NAME: fields.CUST_NAME,
+        HANDLER_TYPE: fields.HANDLER_TYPE,
+        HANDLER_NAME: fields.HANDLER_NAME,
+        CREATE_TIME_BEGIN: fields.CREATE_TIME&&fields.CREATE_TIME[0].format("YYYY-MM-DD HH:mm:ss"),
+        CREATE_TIME_END: fields.CREATE_TIME&&fields.CREATE_TIME[1].format("YYYY-MM-DD HH:mm:ss"),
+      }
     });
   };
-
-
 
 
   handleTableChange = (pagination, filtersArg, sorter) => {
@@ -64,27 +69,27 @@ export default class HandlerLog extends PureComponent {
       {
         title: '员工名称',
         dataIndex: 'STAFF_NAME',
-        sorter:true
+        sorter: true
       },
       {
         title: '员工账号',
         dataIndex: 'STAFF_CODE',
-        sorter:true
+        sorter: true
       },
       {
         title: '租户名称',
         dataIndex: 'CUST_NAME',
-        sorter:true
+        sorter: true
       },
       {
         title: '操作类型',
         dataIndex: 'HANDLER_TYPE',
-        sorter:true
+        sorter: true
       },
       {
         title: '操作名称',
         dataIndex: 'HANDLER_NAME',
-        sorter:true
+        sorter: true
       },
       {
         title: '操作Header',
@@ -97,20 +102,20 @@ export default class HandlerLog extends PureComponent {
       {
         title: '操作时间',
         dataIndex: 'CREATE_TIME',
-        sorter:true
+        sorter: true,
+        render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
       }
     ];
 
 
-
     const queryFormProps = {
-      handleQuery:this.handleQuery,
-      exportable:false,
+      handleQuery: this.handleQuery,
+      exportable: false,
     };
 
     return (
       <PageHeaderLayout content="帮助说明文档">
-        <Card title="操作日志列表" bordered={false} >
+        <Card title="操作日志列表" bordered={false}>
           <QueryForm queryFormProps={queryFormProps}/>
           <StandardTable columns={columns}
                          pagination={pagination}

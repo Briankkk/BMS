@@ -1,5 +1,7 @@
-import {Form,Input} from 'antd';
+import {Form,Input,DatePicker} from 'antd';
 import {FormQuery,FormField } from 'components';
+
+const { RangePicker } = DatePicker;
 
 const QueryForm = Form.create()(props => {
   const {form,queryFormProps} = props;
@@ -29,6 +31,18 @@ const QueryForm = Form.create()(props => {
         form={form}
       ><Input />
       </FormField>
+      <FormField
+        label="操作时间"
+        name="CREATE_TIME"
+        form={form}
+      ><RangePicker
+        showTime={{ format: 'HH:mm:ss' }}
+        format="YYYY-MM-DD HH:mm:ss"
+        placeholder={['开始时间', '结束时间']}
+      />
+      </FormField>
+
+
     </FormQuery>
   )
 
