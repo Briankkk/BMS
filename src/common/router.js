@@ -87,6 +87,9 @@ export const getRouterData = app => {
     '/management/staff': {
       component: dynamicWrapper(app, ['staff'], () => import('../routes/Management/Staff')),
     },
+    '/management/authRequest': {
+      component: dynamicWrapper(app, ['authRequest'], () => import('../routes/Management/AuthRequest')),
+    },
 
     '/mater/mater': {
       component: dynamicWrapper(app, ['mater'], () => import('../routes/Mater/Mater')),

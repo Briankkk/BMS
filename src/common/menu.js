@@ -1,4 +1,5 @@
 import { isUrl } from '../utils/utils';
+import { getAuthority,getCust } from '../utils/authority';
 
 const menuData = {
   admin_super_admin: [
@@ -461,6 +462,10 @@ const menuData = {
           path: 'staff',
         },
         {
+          name: '登录审核',
+          path: 'authRequest',
+        },
+        {
           name: '客户管理',
           path: 'customer',
         },
@@ -497,9 +502,9 @@ function formatter(data, parentPath = '/', parentAuthority) {
 }
 
 export const getMenuData = () => {
-  const role = sessionStorage.getItem('authority');
-  const custCode = sessionStorage.getItem('cust_code');
-  if (role && role !== undefined && role !== 'undefined') {
+  const role = getAuthority()//sessionStorage.getItem('authority');
+  const custCode = getCust();//sessionStorage.getItem('cust_code');
+  if (role&& role !== 'guest' && role !== undefined && role !== 'undefined') {
     return formatter(menuData[custCode + '_' + role]);
   } else {
     return formatter([]);
