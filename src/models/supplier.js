@@ -48,7 +48,7 @@ export default {
         });
       }
       else {
-        message.error('新增供应商失败');
+        message.error(res.message);
       }
     },
 
@@ -61,7 +61,7 @@ export default {
         });
       }
       else {
-        message.error('修改供应商失败');
+        message.error(res.message);
       }
     },
 
@@ -74,7 +74,7 @@ export default {
         });
       }
       else {
-        message.error('删除供应商失败');
+        message.error(res.message);
       }
     },
 

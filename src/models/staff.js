@@ -59,7 +59,7 @@ export default {
         });
       }
       else {
-        message.error('新增员工失败');
+        message.error(res.message);
       }
     },
 
@@ -72,7 +72,7 @@ export default {
         });
       }
       else {
-        message.error('修改员工失败');
+        message.error(res.message);
       }
     },
 
@@ -85,7 +85,7 @@ export default {
         });
       }
       else {
-        message.error('删除员工失败');
+        message.error(res.message);
       }
     },
 

@@ -65,7 +65,7 @@ export default {
         });
       }
       else {
-        message.error('新增原料失败');
+        message.error(res.message);
       }
     },
 
@@ -78,7 +78,7 @@ export default {
         });
       }
       else {
-        message.error('修改原料失败');
+        message.error(res.message);
       }
     },
 
@@ -91,7 +91,7 @@ export default {
         });
       }
       else {
-        message.error('删除原料失败');
+        message.error(res.message);
       }
     },
 

@@ -64,7 +64,7 @@ export default {
         });
       }
       else {
-        message.error('新增客户失败');
+        message.error(res.message);
       }
     },
 
@@ -77,7 +77,7 @@ export default {
         });
       }
       else {
-        message.error('修改客户失败');
+        message.error(res.message);
       }
     },
 
@@ -90,7 +90,7 @@ export default {
         });
       }
       else {
-        message.error('删除客户失败');
+        message.error(res.message);
       }
     },
 
