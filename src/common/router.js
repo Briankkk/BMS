@@ -72,17 +72,20 @@ export const getRouterData = app => {
     '/': {
       component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
     },
+    '/home': {
+      component: dynamicWrapper(app, ['home'], () => import('../routes/Home')),
+    },
     '/management/customer': {
-    component: dynamicWrapper(app, ['customer'], () => import('../routes/Management/Customer')),
+      component: dynamicWrapper(app, ['customer'], () => import('../routes/Management/Customer')),
     },
     '/management/cust': {
-    component: dynamicWrapper(app, ['cust'], () => import('../routes/Management/Cust')),
+      component: dynamicWrapper(app, ['cust'], () => import('../routes/Management/Cust')),
     },
     '/management/supplier': {
       component: dynamicWrapper(app, ['supplier'], () => import('../routes/Management/Supplier')),
     },
     '/management/batchUpload': {
-    component: dynamicWrapper(app, ['batchUpload'], () => import('../routes/Management/BatchUpload')),
+      component: dynamicWrapper(app, ['batchUpload'], () => import('../routes/Management/BatchUpload')),
     },
     '/management/staff': {
       component: dynamicWrapper(app, ['staff'], () => import('../routes/Management/Staff')),
