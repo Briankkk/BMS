@@ -483,6 +483,28 @@ const menuData = {
         }
       ],
     },
+    {
+      name: '原料管理',
+      icon: 'tool',
+      path: 'mater',
+      children: [
+        {
+          name: '原料管理',
+          path: 'mater',
+        }
+      ],
+    },
+    {
+      name: '产品管理',
+      icon: 'tool',
+      path: 'prod',
+      children: [
+        {
+          name: '产品管理',
+          path: 'prod',
+        }
+      ],
+    },
   ],
 }
 

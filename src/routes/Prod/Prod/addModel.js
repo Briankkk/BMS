@@ -7,16 +7,11 @@ const AddModel = Form.create()(props => {
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (!err) {
-        const materTypeId=fieldsValue.MATER_TYPE_ID;
-        if(materTypeId) {
-          fieldsValue.MATER_TYPE_ID =materTypeId.split('_')[0];
-          fieldsValue.MATER_TYPE_NAME =materTypeId.split('_')[1];
-        }
         form.resetFields();
         if (editType === 'Add') {
           handleAdd(fieldsValue);
         } else if (editType === 'Mod') {
-          handleEdit(materInfo.MATER_ID, fieldsValue);
+          handleEdit(supplierInfo.MATER_ID, fieldsValue);
         }
       }
     });
@@ -24,7 +19,7 @@ const AddModel = Form.create()(props => {
 
   const materTypeData = [];
   materTypeList.map((materType,idx) => {
-    materTypeData.push(<Select.Option key={`key_${idx}`} value={materType.MATER_TYPE_ID+'_'+materType.MATER_TYPE_NAME}>{materType.MATER_TYPE_NAME}</Select.Option>)
+    materTypeData.push(<Select.Option key={`key_${idx}`} value={materType.MATER_TYPE_ID}>{materType.MATER_TYPE_NAME}</Select.Option>)
   });
 
   return (
@@ -57,7 +52,7 @@ const AddModel = Form.create()(props => {
         form={form}
         label="原料类型"
         name="MATER_TYPE_ID"
-        initialValue={materInfo.MATER_TYPE_ID&&(materInfo.MATER_TYPE_ID+'_'+materInfo.MATER_TYPE_NAME)}
+        initialValue={materInfo.MATER_TYPE_ID}
         required={false}
       >
         <Select style={{ width: '100%' }} placeholder="请选择原料类型">
@@ -77,7 +72,6 @@ const AddModel = Form.create()(props => {
         form={form}
         label="原料数量"
         name="MATER_NUM"
-        required={true}
         initialValue={materInfo.MATER_NUM}
       >
         <Input />

@@ -21,6 +21,9 @@ export default {
           case 'SUPPLIER':
             yield put(routerRedux.push('/management/supplier'));
             break;
+          case 'MATER':
+            yield put(routerRedux.push('/mater/mater'));
+            break;
         }
 
       }

@@ -75,11 +75,14 @@ export const getRouterData = app => {
     '/home': {
       component: dynamicWrapper(app, ['home'], () => import('../routes/Home')),
     },
-    '/management/customer': {
-      component: dynamicWrapper(app, ['customer'], () => import('../routes/Management/Customer')),
-    },
     '/management/cust': {
       component: dynamicWrapper(app, ['cust'], () => import('../routes/Management/Cust')),
+    },
+    '/management/handlerLog': {
+      component: dynamicWrapper(app, ['handlerLog'], () => import('../routes/Management/HandlerLog')),
+    },
+    '/management/customer': {
+      component: dynamicWrapper(app, ['customer'], () => import('../routes/Management/Customer')),
     },
     '/management/supplier': {
       component: dynamicWrapper(app, ['supplier'], () => import('../routes/Management/Supplier')),
@@ -93,12 +96,13 @@ export const getRouterData = app => {
     '/management/authRequest': {
       component: dynamicWrapper(app, ['authRequest'], () => import('../routes/Management/AuthRequest')),
     },
-    '/management/handlerLog': {
-      component: dynamicWrapper(app, ['handlerLog'], () => import('../routes/Management/HandlerLog')),
-    },
 
     '/mater/mater': {
       component: dynamicWrapper(app, ['mater'], () => import('../routes/Mater/Mater')),
+    },
+
+    '/prod/prod': {
+      component: dynamicWrapper(app, ['prod'], () => import('../routes/Prod/Prod')),
     },
 
 
