@@ -1,4 +1,4 @@
-import {Modal,Form,Input,Select} from 'antd';
+import {Modal,Form,Input,InputNumber,Select} from 'antd';
 import {FormField } from 'components';
 
 
@@ -80,7 +80,7 @@ const AddModel = Form.create()(props => {
         required={true}
         initialValue={materInfo.MATER_NUM}
       >
-        <Input />
+        <InputNumber style={{ width: '100%' }} min={0} />
       </FormField>
       <FormField
         form={form}
@@ -88,7 +88,7 @@ const AddModel = Form.create()(props => {
         name="MATER_HINT_MIN"
         initialValue={materInfo.MATER_HINT_MIN}
       >
-        <Input />
+        <InputNumber style={{ width: '100%' }} min={0} />
       </FormField>
 
     </Modal>

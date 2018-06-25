@@ -1,4 +1,4 @@
-import {Modal,Form,Input,Select} from 'antd';
+import {Modal,Form,Input,InputNumber,Select} from 'antd';
 import {FormField } from 'components';
 
 
@@ -17,7 +17,6 @@ const AddModel = Form.create()(props => {
           fieldsValue.CUSTOMER_ID =customerId.split('_')[0];
           fieldsValue.CUSTOMER_NAME =customerId.split('_')[1];
         }
-        console.log(fieldsValue)
         form.resetFields();
         if (editType === 'Add') {
           handleAdd(fieldsValue);
@@ -102,7 +101,7 @@ const AddModel = Form.create()(props => {
         required={true}
         initialValue={prodInfo.PROD_NUM}
       >
-        <Input />
+        <InputNumber style={{ width: '100%' }} min={0} />
       </FormField>
 
 
