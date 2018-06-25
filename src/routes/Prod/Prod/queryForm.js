@@ -2,31 +2,43 @@ import {Form,Input,Select} from 'antd';
 import {FormQuery,FormField } from 'components';
 
 const QueryForm = Form.create()(props => {
-  const {form,queryFormProps,materTypeList} = props;
-  const materTypeData = [];
-  materTypeList.map((materType,idx) => {
-    materTypeData.push(<Select.Option key={`key_${idx}`} value={materType.MATER_TYPE_ID}>{materType.MATER_TYPE_NAME}</Select.Option>)
+  const {form,queryFormProps,prodTypeList,customerList} = props;
+  const prodTypeData = [];
+  const customerData = [];
+  prodTypeList.map((prodType,idx) => {
+    prodTypeData.push(<Select.Option key={`key_${idx}`} value={prodType.PROD_TYPE_ID}>{prodType.PROD_TYPE_NAME}</Select.Option>)
+  });
+  customerList.map((customer,idx) => {
+    customerData.push(<Select.Option key={`key_${idx}`} value={customer.CUSTOMER_ID}>{customer.CUSTOMER_NAME}</Select.Option>)
   });
   return(
     <FormQuery form={form} {...queryFormProps}>
       <FormField
-        label="原料名称"
-        name="MATER_NAME"
+        label="产品名称"
+        name="PROD_NAME"
         form={form}
       ><Input />
       </FormField>
       <FormField
-        label="原料型号"
-        name="MATER_CODE"
+        label="产品型号"
+        name="PROD_CODE"
         form={form}
       ><Input />
       </FormField>
       <FormField
-        label="原料类型"
-        name="MATER_TYPE_ID"
+        label="客户"
+        name="CUSTOMER_ID"
         form={form}
-      ><Select style={{ width: '100%' }} placeholder="请选择原料类型">
-        {materTypeData}
+      ><Select showSearch filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0} style={{ width: '100%' }} placeholder="请选择客户名称">
+        {customerData}
+      </Select>
+      </FormField>
+      <FormField
+        label="产品类型"
+        name="PROD_TYPE_ID"
+        form={form}
+      ><Select showSearch filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0} style={{ width: '100%' }} placeholder="请选择产品类型">
+        {prodTypeData}
       </Select>
       </FormField>
     </FormQuery>

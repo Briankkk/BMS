@@ -1,5 +1,6 @@
 import { query,queryById,add,mod,del } from '../services/prod';
-import { query as queryMaterTypeList } from '../services/prodType';
+import { query as queryProdTypeList } from '../services/prodType';
+import { queryAll as queryCustomerList } from '../services/customer';
 import {exportFile} from '../services/importExport';
 import {pageInfo} from '../constants/constants'
 import {message} from 'antd';
@@ -10,7 +11,8 @@ export default {
   state: {
     list: [],
     total: 0,
-    materTypeList:[],
+    prodTypeList:[],
+    customerList:[],
     pagination: {...pageInfo},
   },
 
@@ -24,21 +26,38 @@ export default {
         });
 
         yield put({
-          type: 'queryMaterTypeList',
+          type: 'queryProdTypeList',
+          payload: {},
+        });
+
+        yield put({
+          type: 'queryCustomerList',
           payload: {},
         });
       }
     },
 
-    *queryMaterTypeList({ payload = {} }, { call, put }) {
-      const res = yield call(queryMaterTypeList);
+    *queryProdTypeList({ payload = {} }, { call, put }) {
+      const res = yield call(queryProdTypeList);
       if (res.code === 0) {
         yield put({
           type: 'save',
-          payload: {materTypeList: res.data},
+          payload: {prodTypeList: res.data},
         });
       }
     },
+
+    *queryCustomerList({ payload = {} }, { call, put }) {
+      const res = yield call(queryCustomerList);
+      if (res.code === 0) {
+        yield put({
+          type: 'save',
+          payload: {customerList: res.data},
+        });
+      }
+    },
+
+
 
     *exportFile({ payload = {} }, { call, put }) {
       yield call(exportFile, {...payload});
@@ -59,7 +78,7 @@ export default {
     *add({ payload = {} }, { call, put }) {
       const res = yield call(add, payload);
       if (res.code === 0) {
-        message.success('新增原料成功');
+        message.success('新增产品成功');
         yield put({
           type: 'query',
         });
@@ -72,7 +91,7 @@ export default {
     *modify({ payload = {} }, { call, put }) {
       const res = yield call(mod, payload);
       if (res.code === 0) {
-        message.success('修改原料成功');
+        message.success('修改产品成功');
         yield put({
           type: 'query',
         });
@@ -85,7 +104,7 @@ export default {
     *delete({ payload = {} }, { call, put }) {
       const res = yield call(del, payload.id);
       if (res.code === 0) {
-        message.success('删除原料成功');
+        message.success('删除产品成功');
         yield put({
           type: 'query',
         });

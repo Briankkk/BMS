@@ -25,7 +25,7 @@ const QueryForm = Form.create()(props => {
         label="原料类型"
         name="MATER_TYPE_ID"
         form={form}
-      ><Select style={{ width: '100%' }} placeholder="请选择原料类型">
+      ><Select showSearch filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0} style={{ width: '100%' }} placeholder="请选择原料类型">
         {materTypeData}
       </Select>
       </FormField>

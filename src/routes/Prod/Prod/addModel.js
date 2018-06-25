@@ -3,28 +3,46 @@ import {FormField } from 'components';
 
 
 const AddModel = Form.create()(props => {
-  const { modalVisible, form, handleAdd, handleEdit,handleModalVisible,materInfo,editType,materTypeList } = props;
+  const { modalVisible, form, handleAdd, handleEdit,handleModalVisible,prodInfo,editType,prodTypeList,customerList } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (!err) {
+        const prodTypeId=fieldsValue.PROD_TYPE_ID;
+        const customerId=fieldsValue.CUSTOMER_ID;
+        if(prodTypeId) {
+          fieldsValue.PROD_TYPE_ID =prodTypeId.split('_')[0];
+          fieldsValue.PROD_TYPE_NAME =prodTypeId.split('_')[1];
+        }
+        if(customerId) {
+          fieldsValue.CUSTOMER_ID =customerId.split('_')[0];
+          fieldsValue.CUSTOMER_NAME =customerId.split('_')[1];
+        }
+        console.log(fieldsValue)
         form.resetFields();
         if (editType === 'Add') {
           handleAdd(fieldsValue);
         } else if (editType === 'Mod') {
-          handleEdit(supplierInfo.MATER_ID, fieldsValue);
+          handleEdit(prodInfo.PROD_ID, fieldsValue);
         }
       }
     });
   };
 
-  const materTypeData = [];
-  materTypeList.map((materType,idx) => {
-    materTypeData.push(<Select.Option key={`key_${idx}`} value={materType.MATER_TYPE_ID}>{materType.MATER_TYPE_NAME}</Select.Option>)
+  const prodTypeData = [];
+  prodTypeList.map((prodType, idx) => {
+    prodTypeData.push(<Select.Option key={`key_${idx}`}
+                                     value={prodType.PROD_TYPE_ID+'_'+prodType.PROD_TYPE_NAME}>{prodType.PROD_TYPE_NAME}</Select.Option>)
+  });
+
+  const customerData = [];
+  customerList.map((customer, idx) => {
+    customerData.push(<Select.Option key={`key_${idx}`}
+                                     value={customer.CUSTOMER_ID+'_'+customer.CUSTOMER_NAME}>{customer.CUSTOMER_NAME}</Select.Option>)
   });
 
   return (
     <Modal
-      title="新建原料"
+      title="新建产品"
       destroyOnClose={true}
       visible={modalVisible}
       onOk={okHandle}
@@ -32,58 +50,61 @@ const AddModel = Form.create()(props => {
     >
       <FormField
         form={form}
-        label="原料名称"
-        name="MATER_NAME"
+        label="产品名称"
+        name="PROD_NAME"
         required={true}
-        initialValue={materInfo.MATER_NAME}
+        initialValue={prodInfo.PROD_NAME}
       >
         <Input />
       </FormField>
       <FormField
         form={form}
-        label="原料型号"
-        name="MATER_CODE"
+        label="产品型号"
+        name="PROD_CODE"
         required={true}
-        initialValue={materInfo.MATER_CODE}
+        initialValue={prodInfo.PROD_CODE}
       >
         <Input />
       </FormField>
       <FormField
         form={form}
-        label="原料类型"
-        name="MATER_TYPE_ID"
-        initialValue={materInfo.MATER_TYPE_ID}
-        required={false}
+        label="产品类型"
+        name="PROD_TYPE_ID"
+        initialValue={prodInfo.PROD_TYPE_ID&&(prodInfo.PROD_TYPE_ID+'_'+prodInfo.PROD_TYPE_NAME)}
       >
-        <Select style={{ width: '100%' }} placeholder="请选择原料类型">
-          {materTypeData}
+        <Select style={{ width: '100%' }} placeholder="请选择产品类型">
+          {prodTypeData}
         </Select>
       </FormField>
       <FormField
         form={form}
-        label="原料单位"
-        name="MATER_UNIT"
+        label="客户名称"
+        name="CUSTOMER_ID"
+        initialValue={prodInfo.CUSTOMER_ID&&(prodInfo.CUSTOMER_ID+'_'+prodInfo.CUSTOMER_NAME)}
+      >
+        <Select style={{ width: '100%' }} placeholder="请选择客户名称">
+          {customerData}
+        </Select>
+      </FormField>
+      <FormField
+        form={form}
+        label="产品单位"
+        name="PROD_UNIT"
         required={true}
-        initialValue={materInfo.MATER_UNIT}
+        initialValue={prodInfo.PROD_UNIT}
       >
         <Input />
       </FormField>
       <FormField
         form={form}
-        label="原料数量"
-        name="MATER_NUM"
-        initialValue={materInfo.MATER_NUM}
+        label="产品数量"
+        name="PROD_NUM"
+        required={true}
+        initialValue={prodInfo.PROD_NUM}
       >
         <Input />
       </FormField>
-      <FormField
-        form={form}
-        label="原料提醒量"
-        name="MATER_HINT_MIN"
-        initialValue={materInfo.MATER_HINT_MIN}
-      >
-        <Input />
-      </FormField>
+
 
     </Modal>
   );

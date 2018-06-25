@@ -5,6 +5,10 @@ export async function query(params) {
   return request(`/customer?${stringify(params)}`);
 }
 
+export async function queryAll() {
+  return request(`/customerAll`);
+}
+
 export async function queryById(id) {
   return request('/customer/'+id);
 }

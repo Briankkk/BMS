@@ -19,7 +19,7 @@ export async function add(params) {
 }
 
 export async function mod(params) {
-  return request('/prod/'+params.MATER_ID, {
+  return request('/prod/'+params.PROD_ID, {
     method: 'PUT',
     body: {
       ...params,

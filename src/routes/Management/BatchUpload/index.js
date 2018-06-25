@@ -64,6 +64,7 @@ export default class BatchUpload extends PureComponent {
                 <Select.Option value="CUSTOMER">新增客户</Select.Option>
                 <Select.Option value="SUPPLIER">新增供应商</Select.Option>
                 <Select.Option value="MATER">新增原料</Select.Option>
+                <Select.Option value="PROD">新增产品</Select.Option>
               </Select>
             </FormField>
 
