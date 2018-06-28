@@ -2,19 +2,16 @@ import { stringify } from 'qs';
 import request from '../utils/request';
 
 export async function query(params) {
-  return request(`/supplier?${stringify(params)}`);
+  return request(`/purchase?${stringify(params)}`);
 }
 
-export async function queryAll() {
-  return request(`/supplierAll`);
-}
 
 export async function queryById(id) {
-  return request('/supplier/'+id);
+  return request('/purchase/'+id);
 }
 
 export async function add(params) {
-  return request('/supplier', {
+  return request('/purchase', {
     method: 'POST',
     body: {
       ...params,
@@ -23,7 +20,7 @@ export async function add(params) {
 }
 
 export async function mod(params) {
-  return request('/supplier/'+params.SUPPLIER_ID, {
+  return request('/purchase/'+params.PURCHASE_ID, {
     method: 'PUT',
     body: {
       ...params,
@@ -32,7 +29,7 @@ export async function mod(params) {
 }
 
 export async function del(id) {
-  return request('/supplier/'+id, {
+  return request('/purchase/'+id, {
     method: 'DELETE',
   });
 }

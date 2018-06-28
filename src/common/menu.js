@@ -491,6 +491,10 @@ const menuData = {
         {
           name: '原料管理',
           path: 'mater',
+        },
+        {
+          name: '采购单管理',
+          path: 'purchase',
         }
       ],
     },

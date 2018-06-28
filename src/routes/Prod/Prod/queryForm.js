@@ -3,14 +3,6 @@ import {FormQuery,FormField } from 'components';
 
 const QueryForm = Form.create()(props => {
   const {form,queryFormProps,prodTypeList,customerList} = props;
-  const prodTypeData = [];
-  const customerData = [];
-  prodTypeList.map((prodType,idx) => {
-    prodTypeData.push(<Select.Option key={`key_${idx}`} value={prodType.PROD_TYPE_ID}>{prodType.PROD_TYPE_NAME}</Select.Option>)
-  });
-  customerList.map((customer,idx) => {
-    customerData.push(<Select.Option key={`key_${idx}`} value={customer.CUSTOMER_ID}>{customer.CUSTOMER_NAME}</Select.Option>)
-  });
   return(
     <FormQuery form={form} {...queryFormProps}>
       <FormField
@@ -30,7 +22,11 @@ const QueryForm = Form.create()(props => {
         name="CUSTOMER_ID"
         form={form}
       ><Select showSearch filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0} style={{ width: '100%' }} placeholder="请选择客户名称">
-        {customerData}
+        {
+          customerList.map((customer,idx)=>
+            <Select.Option key={`key_${idx}`} value={customer.CUSTOMER_ID}>{customer.CUSTOMER_NAME}</Select.Option>
+          )
+        }
       </Select>
       </FormField>
       <FormField
@@ -38,7 +34,11 @@ const QueryForm = Form.create()(props => {
         name="PROD_TYPE_ID"
         form={form}
       ><Select showSearch filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0} style={{ width: '100%' }} placeholder="请选择产品类型">
-        {prodTypeData}
+        {
+          prodTypeList.map((prodType,idx)=>
+            <Select.Option key={`key_${idx}`} value={prodType.PROD_TYPE_ID}>{prodType.PROD_TYPE_NAME}</Select.Option>
+          )
+        }
       </Select>
       </FormField>
     </FormQuery>

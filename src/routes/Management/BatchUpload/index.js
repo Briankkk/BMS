@@ -21,7 +21,6 @@ function beforeUpload(file) {
 @Form.create()
 export default class BatchUpload extends PureComponent {
 
-
   state = {
     fileList: [],
   };

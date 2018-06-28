@@ -100,7 +100,9 @@ export const getRouterData = app => {
     '/mater/mater': {
       component: dynamicWrapper(app, ['mater'], () => import('../routes/Mater/Mater')),
     },
-
+    '/mater/purchase': {
+      component: dynamicWrapper(app, ['purchase'], () => import('../routes/Mater/Purchase')),
+    },
     '/prod/prod': {
       component: dynamicWrapper(app, ['prod'], () => import('../routes/Prod/Prod')),
     },
