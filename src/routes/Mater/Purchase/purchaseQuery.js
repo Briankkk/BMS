@@ -1,5 +1,5 @@
 import React, { PureComponent, Fragment } from 'react';
-import {Card,Divider,Modal,Popconfirm} from 'antd';
+import {Card,Divider,Modal,Popconfirm,Badge} from 'antd';
 import moment from 'moment';
 import { StandardTable,AddButton } from 'components';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
@@ -59,6 +59,21 @@ export default class PurchaseQuery extends PureComponent {
       {
         title: '备注',
         dataIndex: 'REMARK',
+      },
+      {
+        title: '状态',
+        dataIndex: 'STATE',
+        render: text =>
+          text === 'A' ? (
+            <Badge status="success" text="正常" />
+          ) : (
+            <Badge status="default" text="废弃" />
+          ),
+      },
+      {
+        title: '创建时间',
+        dataIndex: 'CREATE_TIME',
+        render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
       },
 
       {

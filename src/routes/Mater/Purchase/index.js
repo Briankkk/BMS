@@ -58,13 +58,10 @@ export default class Purchase extends PureComponent {
           }
         });
       },
-      onDel(purchaseId){
+      onDel(id){
         dispatch({
-          type: 'purchase/queryById',
-          payload: {
-            purchaseId: purchaseId,
-            editType: 'edit'
-          }
+          type: 'purchase/delete',
+          payload: {id}
         });
       },
     };

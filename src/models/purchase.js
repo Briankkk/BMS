@@ -64,13 +64,6 @@ export default {
     },
 
 
-
-
-    *exportFile({ payload = {} }, { call, put }) {
-      yield call(exportFile, {...payload});
-    },
-
-
     *queryById({ payload = {} }, { call, put }) {
       const res = yield call(queryById, payload.purchaseId);
       if (res.code === 0) {
@@ -83,9 +76,6 @@ export default {
 
 
     *add({ payload = {} }, { call, put }) {
-
-      console.log(payload);
-
       const res = yield call(add, payload);
       if (res.code === 0) {
         message.success('新增采购单成功');
@@ -98,23 +88,11 @@ export default {
       }
     },
 
-    *modify({ payload = {} }, { call, put }) {
-      const res = yield call(mod, payload);
-      if (res.code === 0) {
-        message.success('修改原料成功');
-        yield put({
-          type: 'query',
-        });
-      }
-      else {
-        message.error(res.message);
-      }
-    },
 
     *delete({ payload = {} }, { call, put }) {
       const res = yield call(del, payload.id);
       if (res.code === 0) {
-        message.success('删除原料成功');
+        message.success('删除采购单成功');
         yield put({
           type: 'query',
         });

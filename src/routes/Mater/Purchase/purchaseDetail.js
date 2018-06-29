@@ -1,5 +1,6 @@
 import React, { PureComponent,Fragment} from 'react';
 import { Card, Badge, Table, Divider,Button } from 'antd';
+import moment from 'moment';
 import { FormField,FooterToolbar,DescriptionList} from 'components';
 import styles from './index.less';
 const { Description } = DescriptionList;
@@ -12,7 +13,14 @@ export default class PurchaseDetail extends PureComponent {
 
   render() {
     const { purchaseInfo, loading,handleCancel } = this.props;
-    console.log(purchaseInfo)
+
+    const purchaseSummary = {
+      SUPPLIER_NAME:purchaseInfo[0].SUPPLIER_NAME,
+      PURCHASE_CODE:purchaseInfo[0].PURCHASE_CODE,
+      PHONE:purchaseInfo[0].PHONE,
+      REMARK:purchaseInfo[0].REMARK,
+      DELIVER_DATE:moment(purchaseInfo[0].DELIVER_DATE).format('YYYY-MM-DD')
+    };
 
     const columns = [
       {
@@ -22,11 +30,12 @@ export default class PurchaseDetail extends PureComponent {
       },
       {
         title: '原料名称',
-        dataIndex: 'MATER_CODE'
+        dataIndex: 'MATER_NAME'
       },
       {
         title: '原料型号',
-        dataIndex: 'MATER_NAME'
+        dataIndex: 'MATER_CODE',
+        sorter: (a, b) => a.MATER_CODE - b.MATER_CODE
       },
       {
         title: '原料数量',
@@ -41,9 +50,9 @@ export default class PurchaseDetail extends PureComponent {
         dataIndex: 'STATE',
         render: text =>
           text === '1' ? (
-            <Badge status="success" text="成功" />
+            <Badge status="success" text="完成" />
           ) : (
-            <Badge status="processing" text="进行中" />
+            <Badge status="Error" text="在途" />
           ),
       },
       {
@@ -53,6 +62,7 @@ export default class PurchaseDetail extends PureComponent {
       {
         title: '交货时间',
         dataIndex: 'DELIVER_DATE',
+        render: val => <span>{moment(val).format('YYYY-MM-DD')}</span>,
       },
       {
         title: '备注',
@@ -64,10 +74,11 @@ export default class PurchaseDetail extends PureComponent {
       <Fragment>
         <Card bordered={false}>
           <DescriptionList size="large" title="采购单概要" style={{ marginBottom: 32 }}>
-            <Description term="取货单号">1000000000</Description>
-            <Description term="状态">已取货</Description>
-            <Description term="销售单号">1234123421</Description>
-            <Description term="子订单">3214321432</Description>
+            <Description term="采购单编号">{purchaseSummary.PURCHASE_CODE}</Description>
+            <Description term="供应商名称">{purchaseSummary.SUPPLIER_NAME}</Description>
+            <Description term="交货时间">{purchaseSummary.DELIVER_DATE}</Description>
+            <Description term="联系电话">{purchaseSummary.PHONE}</Description>
+            <Description term="备注">{purchaseSummary.REMARK}</Description>
           </DescriptionList>
           <Divider style={{ marginBottom: 32 }} />
 

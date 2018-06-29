@@ -35,7 +35,6 @@ export default class TableForm extends PureComponent {
         this.cacheOriginData[key] = { ...target };
       }
       target.editable = !target.editable;
-      console.log(newData);
       this.setState({ data: newData });
     }
   };
@@ -132,6 +131,16 @@ export default class TableForm extends PureComponent {
     this.setState({ data: newData });
     this.clickedCancel = false;
   }
+
+  handleTableChange = (pagination, filtersArg, sorter) => {
+    const params = {};
+    if (sorter.field) {
+      params.SORTER_FIELD = `${sorter.field}`;
+      params.SORTER_ORDER = `${sorter.order}`
+    }
+    //this.props.onChange(params)
+  };
+
   render() {
     const {materList} = this.props;
     const columns = [
@@ -141,9 +150,8 @@ export default class TableForm extends PureComponent {
         render: (text, record, index)=><span>{index + 1}</span>
       },
       {
-        title: '原料名称',
+        title: '原料型号',
         dataIndex: 'MATER_CODE',
-        sorter: (a, b) => a.MATER_CODE - b.MATER_CODE,
         render: (text, record) => {
           if (record.editable) {
             return (
@@ -289,6 +297,7 @@ export default class TableForm extends PureComponent {
           columns={columns}
           dataSource={this.state.data}
           pagination={false}
+          onChange={this.handleTableChange}
           rowClassName={record => {
             return record.editable ? styles.editable : '';
           }}
