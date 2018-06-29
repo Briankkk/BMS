@@ -1,19 +1,40 @@
 import React, { PureComponent, Fragment } from 'react';
-
 import {Card,Divider,Modal,Popconfirm} from 'antd';
+import moment from 'moment';
 import { StandardTable,AddButton } from 'components';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import QueryForm from './queryForm';
-
 import styles from './index.less';
 
 
-
-
 export default class PurchaseQuery extends PureComponent {
+  state = {
+    formValues: {},
+  };
+
+  handleQuery = fields=> {
+    this.setState({
+      formValues: fields,
+    });
+    this.props.onQuery(fields)
+  };
+
+  handleTableChange = (pagination, filtersArg, sorter) => {
+    const { formValues } = this.state;
+    const params = {
+      PAGE_INDEX: pagination.current,
+      PAGE_SIZE: pagination.pageSize,
+      ...formValues,
+    };
+    if (sorter.field) {
+      params.SORTER_FIELD = `${sorter.field}`;
+      params.SORTER_ORDER = `${sorter.order}`
+    }
+    this.props.onQuery(params)
+  };
 
   render() {
-    const { list,pagination,total,supplierList, loading,onAdd } = this.props;
+    const { list,pagination,total,supplierList, loading,onAdd,onDetail,onDel } = this.props;
 
     const columns = [
       {
@@ -23,12 +44,13 @@ export default class PurchaseQuery extends PureComponent {
       {
         title: '供应商名称',
         dataIndex: 'SUPPLIER_NAME',
-        sorter:true
+        sorter: true
       },
       {
         title: '交货时间',
         dataIndex: 'DELIVER_DATE',
-        sorter:true
+        sorter: true,
+        render: val => <span>{moment(val).format('YYYY-MM-DD')}</span>,
       },
       {
         title: '联系电话',
@@ -43,21 +65,20 @@ export default class PurchaseQuery extends PureComponent {
         title: '操作',
         render: (text, record) => (
           <Fragment>
-            <a onClick={() => {this.handleModalVisible(true,'Mod',record);}}>修改</a>
+            <a onClick={() => onDetail(record.PURCHASE_ID)}>详情</a>
             <Divider type="vertical"/>
-            <Popconfirm title="确认要删除这个原料吗?" onConfirm={() => {
-                                this.handleDelete(record.MATER_ID);
-                            }} okText="确认" cancelText="取消"><a>删除</a>
+            <Popconfirm title="确认要删除这个采购单吗?" onConfirm={() => onDel(record.PURCHASE_ID)} okText="确认" cancelText="取消"><a>删除</a>
             </Popconfirm>
           </Fragment>
         ),
       }
     ];
 
+
     const queryFormProps = {
-      handleQuery:this.handleQuery,
-      exportable:false,
-      handleExport:this.handleExport
+      handleQuery: this.handleQuery,
+      exportable: false,
+      handleExport: this.handleExport
     };
 
     return (

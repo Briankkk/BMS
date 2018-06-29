@@ -1,6 +1,7 @@
 import { routerRedux } from 'dva/router';
 import { query,queryById,add,mod,del } from '../services/purchase';
 import { queryAll as querySupplierList } from '../services/supplier';
+import { queryAll as queryMaterList } from '../services/mater';
 import {exportFile} from '../services/importExport';
 import {pageInfo} from '../constants/constants'
 import {message} from 'antd';
@@ -12,8 +13,10 @@ export default {
     list: [],
     total: 0,
     supplierList: [],
+    materList:[],
     pagination: {...pageInfo},
     editType: '',
+    purchaseInfo:{}
   },
 
   effects: {
@@ -22,13 +25,20 @@ export default {
       if (res.code === 0) {
         yield put({
           type: 'save',
-          payload: {list: res.data.list, total: res.data.total},
+          payload: {list: res.data.list, total: res.data.total,editType:''},
         });
 
         yield put({
           type: 'querySupplierList',
           payload: {},
         });
+
+        yield put({
+          type: 'queryMaterList',
+          payload: {},
+        });
+
+
       }
     },
 
@@ -43,26 +53,42 @@ export default {
       }
     },
 
+    *queryMaterList({ payload = {} }, { call, put }) {
+      const res = yield call(queryMaterList);
+      if (res.code === 0) {
+        yield put({
+          type: 'save',
+          payload: {materList: res.data},
+        });
+      }
+    },
+
+
+
+
     *exportFile({ payload = {} }, { call, put }) {
       yield call(exportFile, {...payload});
     },
 
 
     *queryById({ payload = {} }, { call, put }) {
-      const res = yield call(queryById, payload.id);
+      const res = yield call(queryById, payload.purchaseId);
       if (res.code === 0) {
         yield put({
           type: 'save',
-          payload: {list: res.data},
+          payload: {purchaseInfo: res.data,editType:payload.editType},
         });
       }
     },
 
 
     *add({ payload = {} }, { call, put }) {
+
+      console.log(payload);
+
       const res = yield call(add, payload);
       if (res.code === 0) {
-        message.success('新增原料成功');
+        message.success('新增采购单成功');
         yield put({
           type: 'query',
         });

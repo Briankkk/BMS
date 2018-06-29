@@ -5,6 +5,10 @@ export async function query(params) {
   return request(`/mater?${stringify(params)}`);
 }
 
+export async function queryAll() {
+  return request(`/materAll`);
+}
+
 export async function queryById(id) {
   return request('/mater/'+id);
 }
