@@ -12,7 +12,7 @@ export default class PurchaseDetail extends PureComponent {
 
 
   render() {
-    const { purchaseInfo, loading,handleCancel } = this.props;
+    const { purchaseInfo, loading,handleCancel,handleExportPDF } = this.props;
 
     const purchaseSummary = {
       SUPPLIER_NAME:purchaseInfo[0].SUPPLIER_NAME,
@@ -20,6 +20,11 @@ export default class PurchaseDetail extends PureComponent {
       PHONE:purchaseInfo[0].PHONE,
       REMARK:purchaseInfo[0].REMARK,
       DELIVER_DATE:moment(purchaseInfo[0].DELIVER_DATE).format('YYYY-MM-DD')
+    };
+
+    const exportPDF = () => {
+      const purchaseId = purchaseInfo[0].SUPPLIER_ID;
+      handleExportPDF(purchaseId);
     };
 
     const columns = [
@@ -61,7 +66,7 @@ export default class PurchaseDetail extends PureComponent {
       },
       {
         title: '交货时间',
-        dataIndex: 'DELIVER_DATE',
+        dataIndex: 'MATER_DELIVER_DATE',
         render: val => <span>{moment(val).format('YYYY-MM-DD')}</span>,
       },
       {
@@ -93,7 +98,10 @@ export default class PurchaseDetail extends PureComponent {
           />
         </Card>
         <FooterToolbar >
-          <Button type="primary" onClick={handleCancel} loading={loading}>
+          <Button type="primary" onClick={exportPDF} loading={loading}>
+            导出
+          </Button>
+          <Button type="ghost" style={{ marginLeft: 8 }} onClick={handleCancel}>
             返回
           </Button>
         </FooterToolbar>

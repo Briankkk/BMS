@@ -74,6 +74,12 @@ export default class Purchase extends PureComponent {
           type: 'purchase/save',
           payload: {editType: ''}
         });
+      },
+      handleExportPDF(purchaseId){
+        dispatch({
+          type: 'purchase/generatePDF',
+          payload: {EXPORT_TYPE:'PURCHASE',purchaseId: purchaseId}
+        });
       }
     };
 

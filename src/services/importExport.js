@@ -10,7 +10,7 @@ export async function generatePDF(params) {
 }
 
 export async function printPDF(params) {
-  window.open(`/printPDF?${stringify(params)}`);
+  window.setTimeout(function(){ window.open(`/printPDF?${stringify(params)}`); }, 1000);
 }
 
 export async function importFile(params) {

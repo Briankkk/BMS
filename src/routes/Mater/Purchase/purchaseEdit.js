@@ -135,7 +135,9 @@ export default class PurchaseEdit extends PureComponent {
             form={form}
             initialValue={[]}
             wrapperCol={{ span: 24 }}
+            labelCol={{ span: 0 }}
             required={true}
+            label="原料"
             name="maters"
           >
             <TableForm materList={materList}/>

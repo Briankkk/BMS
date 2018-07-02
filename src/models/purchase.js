@@ -2,7 +2,7 @@ import { routerRedux } from 'dva/router';
 import { query,queryById,add,mod,del } from '../services/purchase';
 import { queryAll as querySupplierList } from '../services/supplier';
 import { queryAll as queryMaterList } from '../services/mater';
-import {exportFile} from '../services/importExport';
+import {generatePDF,printPDF} from '../services/importExport';
 import {pageInfo} from '../constants/constants'
 import {message} from 'antd';
 
@@ -100,6 +100,23 @@ export default {
       else {
         message.error(res.message);
       }
+    },
+
+    *generatePDF({ payload = {} }, { call, put }) {
+      const res = yield call(generatePDF, {...payload});
+      if (res.code === 0) {
+
+        yield put({
+          type: 'printPDF',
+          payload: {fileName: res.data},
+        });
+
+      }
+    },
+
+
+    *printPDF({ payload = {} }, { call, put }) {
+      yield call(printPDF, {...payload});
     },
 
 
